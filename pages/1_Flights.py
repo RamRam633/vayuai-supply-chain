@@ -21,7 +21,7 @@ from components import (
     render_filters_sidebar, apply_filters, filter_summary_caption,
     inject_global_css, apply_light, map_kwargs,
     render_api_status, render_cold_start_banner_if_needed,
-    render_brand_header, render_brand_footer, LOGO_PATH,
+    render_brand_topbar, render_brand_header, render_brand_footer, LOGO_PATH,
     TEXT, TEXT_MUTED, BORDER, ACCENT,
 )
 from pipelines import bootstrap
@@ -34,6 +34,7 @@ st.set_page_config(
 )
 inject_global_css()
 bootstrap.ensure_bootstrap()
+render_brand_topbar(section="Flights")
 render_brand_header()
 st.markdown("## Live air traffic")
 
@@ -61,7 +62,7 @@ if not flights:
         "**Refresh data now** in the sidebar to force a fetch."
     )
     render_api_status()
-render_brand_footer()
+    render_brand_footer()
     st.stop()
 
 

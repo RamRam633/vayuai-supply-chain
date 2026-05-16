@@ -23,7 +23,7 @@ from components import (
     render_filters_sidebar, apply_filters,
     inject_global_css, apply_light, map_kwargs,
     render_api_status, render_cold_start_banner_if_needed,
-    render_brand_header, render_brand_footer, LOGO_PATH,
+    render_brand_topbar, render_brand_header, render_brand_footer, LOGO_PATH,
     TEXT_MUTED, BORDER, ACCENT, WARNING,
 )
 from pipelines import bootstrap
@@ -36,6 +36,7 @@ st.set_page_config(
 )
 inject_global_css()
 bootstrap.ensure_bootstrap()
+render_brand_topbar(section="Ships")
 render_brand_header()
 st.markdown("## Live vessel traffic")
 

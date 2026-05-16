@@ -28,6 +28,7 @@ from .api_status import (  # noqa: F401
     render_cold_start_banner_if_needed,
 )
 from .branding import (  # noqa: F401
+    render_brand_topbar,
     render_brand_header,
     render_brand_footer,
     LOGO_PATH,

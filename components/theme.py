@@ -149,11 +149,18 @@ GLOBAL_CSS = f"""
 <style>
   @import url('{_FONTS_LINK}');
 
-  /* Layout */
+  /* Layout. Extra top padding so Streamlit's hidden top toolbar can't
+     overlap the page heading. */
   .block-container {{
-    padding-top: 1.0rem;
+    padding-top: 0.5rem;
     padding-bottom: 2rem;
     max-width: 1500px;
+  }}
+  /* Push the main content past Streamlit's chrome (the 'Manage app' and
+     hamburger live in a roughly 56px tall sticky header). */
+  [data-testid="stMainBlockContainer"],
+  section.main > div.block-container {{
+    padding-top: 0.5rem !important;
   }}
   .stApp {{ background: {BG}; }}
   html, body, [class*="stApp"] {{

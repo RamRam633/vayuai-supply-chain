@@ -37,6 +37,7 @@ from components import (
     render_top_movers,
     render_api_status,
     render_cold_start_banner_if_needed,
+    render_brand_topbar,
     render_brand_header,
     render_brand_footer,
     LOGO_PATH,
@@ -59,6 +60,12 @@ inject_global_css()
 # Kick the cold-start bootstrap on the very first render of this process.
 # Idempotent - subsequent reruns are no-ops.
 bootstrap.ensure_bootstrap()
+
+
+# --------------------------------------------------------------------------- #
+# Top brand strip - renders above the page content on every page
+# --------------------------------------------------------------------------- #
+render_brand_topbar(section="Overview")
 
 
 # --------------------------------------------------------------------------- #

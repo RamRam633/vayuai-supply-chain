@@ -36,7 +36,7 @@ from pipelines.flights import (
 from components import (
     render_filters_sidebar, inject_global_css, apply_light, map_kwargs,
     render_api_status, render_cold_start_banner_if_needed,
-    render_brand_header, render_brand_footer, LOGO_PATH,
+    render_brand_topbar, render_brand_header, render_brand_footer, LOGO_PATH,
     TEXT, TEXT_MUTED, BORDER, BG, BG_MUTED, ACCENT, ACCENT_DEEP, CRITICAL,
 )
 from pipelines import bootstrap
@@ -49,6 +49,7 @@ st.set_page_config(
 )
 inject_global_css()
 bootstrap.ensure_bootstrap()
+render_brand_topbar(section="Logistics")
 render_brand_header()
 
 st.markdown("## Cargo airline operations")
@@ -110,7 +111,7 @@ if not flights:
         "Free registration at https://opensky-network.org/."
     )
     render_api_status()
-render_brand_footer()
+    render_brand_footer()
     st.stop()
 
 

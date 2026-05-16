@@ -65,6 +65,73 @@ def _wordmark_html(size_rem: float = 1.2) -> str:
 
 
 # --------------------------------------------------------------------------- #
+# Top brand bar - full-width strip at the top of the main content area
+# --------------------------------------------------------------------------- #
+def render_brand_topbar(section: str | None = None) -> None:
+    """Render the brand strip at the very top of the main content.
+
+    ``section`` is the short name of the current page (e.g. "Flights",
+    "Logistics"). It appears next to the product name so users always
+    know where they are. Pass ``None`` on the Overview.
+    """
+    logo = _logo_data_uri_64()
+    logo_html = (
+        f"<img src='{logo}' style='width:30px;height:30px;border-radius:7px;"
+        f"flex-shrink:0' alt='VayuAI'/>"
+        if logo else ""
+    )
+
+    section_html = ""
+    if section:
+        section_html = (
+            f"<span style='color:{TEXT_SUBTLE};margin:0 6px'>/</span>"
+            f"<span style='font-family:Fraunces, ui-serif, serif;"
+            f"font-size:0.92rem;color:{TEXT};font-weight:500'>"
+            f"{section}</span>"
+        )
+
+    st.markdown(
+        f"""
+        <div style='display:flex;align-items:center;justify-content:space-between;
+                    padding:14px 4px;margin-bottom:18px;
+                    border-bottom:1px solid {BORDER}'>
+          <a href='{VAYUAI_URL}' target='_blank' style='text-decoration:none;
+             display:flex;align-items:center;gap:12px'>
+            {logo_html}
+            {_wordmark_html(1.25)}
+            <span style='color:{TEXT_SUBTLE};margin:0 4px;font-weight:300'>|</span>
+            <span style='font-family:JetBrains Mono, ui-monospace, monospace;
+                         font-size:0.72rem;color:{TEXT_MUTED};
+                         text-transform:uppercase;letter-spacing:0.08em'>
+              {PRODUCT_NAME}
+            </span>
+            {section_html}
+          </a>
+
+          <div style='display:flex;align-items:center;gap:14px;
+                      font-size:0.78rem'>
+            <a href='{VAYUAI_URL}/work' target='_blank'
+               style='color:{TEXT_MUTED};text-decoration:none'>Work</a>
+            <a href='{VAYUAI_URL}/writing' target='_blank'
+               style='color:{TEXT_MUTED};text-decoration:none'>Writing</a>
+            <a href='{VAYUAI_URL}/contact' target='_blank'
+               style='color:{TEXT_MUTED};text-decoration:none'>Contact</a>
+            <a href='{VAYUAI_URL}' target='_blank'
+               style='display:inline-flex;align-items:center;
+                      padding:5px 12px;border-radius:999px;
+                      border:1px solid {ACCENT}55;
+                      background:{ACCENT}1A;color:{ACCENT_DEEP};
+                      text-decoration:none;font-weight:500'>
+              vayuai.ai
+            </a>
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+# --------------------------------------------------------------------------- #
 # Sidebar header - render once per page near the top of the sidebar
 # --------------------------------------------------------------------------- #
 def render_brand_header() -> None:

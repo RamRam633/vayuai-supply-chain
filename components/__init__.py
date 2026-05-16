@@ -5,7 +5,7 @@ from .theme import (  # noqa: F401
     CATEGORY_COLOR,
     CATEGORY_COLOR_RGBA,
     PALETTE,
-    BG, BG_MUTED, BORDER, TEXT, TEXT_MUTED,
+    BG, BG_MUTED, BORDER, TEXT, TEXT_MUTED, TEXT_SUBTLE,
     ACCENT, ACCENT_DEEP, CRITICAL, WARNING, INFO,
 )
 from .world_map import render_world_map  # noqa: F401

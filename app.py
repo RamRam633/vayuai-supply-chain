@@ -43,7 +43,7 @@ from components import (
     render_brand_footer,
     LOGO_PATH,
     inject_global_css,
-    TEXT, TEXT_MUTED, ACCENT, BORDER,
+    TEXT, TEXT_MUTED, TEXT_SUBTLE, ACCENT, ACCENT_DEEP, BORDER, BG_MUTED,
 )
 from pipelines import bootstrap
 from pipelines.flights import read_snapshot as read_flights
@@ -143,23 +143,47 @@ n_market   = sum(1 for s in signals if s.get("category") in ("commodity", "macro
 
 
 # --------------------------------------------------------------------------- #
-# Title + page header
+# Welcome hero - what this is + live counts. Replaces the old plain H1.
 # --------------------------------------------------------------------------- #
-st.markdown(
-    f"<div style='display:flex;align-items:baseline;justify-content:space-between;"
-    f"margin-bottom:2px'>"
-    f"<h1 style='margin:0;padding:0;font-size:1.85rem;font-weight:650'>"
-    f"Supply Chain Pulse</h1>"
-    f"<div style='color:{TEXT_MUTED};font-size:0.85rem'>Overview · "
-    f"{flt['window_label']}</div></div>",
-    unsafe_allow_html=True,
+def _stat(value: int, label: str) -> str:
+    """Mono-cased stat with the number in Fraunces, label in JBM."""
+    return (
+        f"<span style=\"display:inline-flex;align-items:baseline;gap:8px\">"
+        f"<b style=\"color:{TEXT};font-family:Fraunces,ui-serif,serif;"
+        f"font-size:1.25rem;font-weight:600;letter-spacing:-0.015em\">"
+        f"{value:,}</b>"
+        f"<span style=\"font-family:'JetBrains Mono',ui-monospace,monospace;"
+        f"font-size:0.7rem;color:{TEXT_SUBTLE};text-transform:uppercase;"
+        f"letter-spacing:0.08em\">{label}</span>"
+        f"</span>"
+    )
+
+_stats_row = "<span style=\"color:" + BORDER + "\">|</span>".join(
+    f"<span style=\"padding:0 14px\">{chip}</span>" for chip in [
+        _stat(len(signals),       "signals in window"),
+        _stat(len(airborne_now),  "aircraft airborne"),
+        _stat(len(vessels_now),   "vessels tracked"),
+        _stat(15,                 "live data feeds"),
+        _stat(len(config.REGIONS), "regions"),
+    ]
 )
+
 st.markdown(
-    f"<div style='color:{TEXT_MUTED};font-size:0.95rem;margin-bottom:14px'>"
-    "Live view of geopolitical, weather, tropical, seismic, volcanic, "
-    "natural-disaster, commodity, freight, aviation and macro signals "
-    "shaping global supply chains."
-    "</div>",
+    f"""<div style="margin:6px 0 18px 0;padding:22px 26px;background:{BG_MUTED};border:1px solid {BORDER};border-radius:16px;border-left:3px solid {ACCENT}">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+<span style="position:relative;display:inline-block;width:9px;height:9px;border-radius:50%;background:{ACCENT};box-shadow:0 0 0 4px {ACCENT}33"></span>
+<span style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:0.7rem;color:{ACCENT_DEEP};text-transform:uppercase;letter-spacing:0.14em;font-weight:600">Live &middot; refreshed every {config.REFRESH_INTERVAL_MINUTES} minutes &middot; {flt['window_label']}</span>
+</div>
+<h1 style="margin:0 0 10px 0;padding:0;font-family:Fraunces,ui-serif,Georgia,serif;font-size:2.3rem;font-weight:650;letter-spacing:-0.022em;color:{TEXT};line-height:1.1">
+The state of global trade, right now.
+</h1>
+<p style="color:{TEXT_MUTED};font-size:1.02rem;line-height:1.55;margin:0;max-width:760px">
+Real-time pressure across every link in the global supply chain. Fifteen free public feeds (satellites tracking ships and planes, port congestion proxies, futures and macro series, weather alerts, geopolitical events, search trends and news) merged into one continuously refreshing view across nine regions and eight strategic chokepoints.
+</p>
+<div style="margin-top:18px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 0;font-size:0.85rem">
+{_stats_row}
+</div>
+</div>""",
     unsafe_allow_html=True,
 )
 filter_summary_caption(flt, len(all_signals), len(signals))

@@ -29,6 +29,13 @@ NOAA_USER_AGENT = os.getenv("NOAA_USER_AGENT", "SupplyChainPulse/0.1")
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
 ENABLE_CLAUDE_SUMMARY = os.getenv("ENABLE_CLAUDE_SUMMARY", "false").lower() == "true"
 
+# OpenSky Network - free, but the anonymous /states/all endpoint is rate-
+# limited on shared cloud IPs. Setting a (free) account here bumps the
+# daily quota and usually fixes "0 aircraft" on Render.
+# Register: https://opensky-network.org/index.php?option=com_users&view=registration
+OPENSKY_USERNAME = os.getenv("OPENSKY_USERNAME", "")
+OPENSKY_PASSWORD = os.getenv("OPENSKY_PASSWORD", "")
+
 REFRESH_INTERVAL_MINUTES = int(os.getenv("REFRESH_INTERVAL_MINUTES", "15"))
 
 # --------------------------------------------------------------------------- #
@@ -117,7 +124,39 @@ MAJOR_PORTS = [
 ]
 
 # --------------------------------------------------------------------------- #
-# Commodity universe (yfinance tickers).
+# Cargo airline operators - ICAO airline designator (first three chars of
+# the callsign) mapped to display name + brand color. Used by the Logistics
+# page to filter the live flights snapshot down to cargo aircraft and to
+# build per-carrier maps and leaderboards.
+# Source: ICAO airline designators + each carrier's public IFR call signs.
+# --------------------------------------------------------------------------- #
+CARGO_OPERATORS = {
+    "FDX": {"name": "FedEx Express",       "color": "#4d148c"},
+    "UPS": {"name": "UPS Airlines",        "color": "#8b6914"},
+    "GTI": {"name": "Atlas Air",           "color": "#1f4068"},  # also Amazon Air
+    "ABX": {"name": "ABX Air",             "color": "#1976d2"},  # ATSG / Amazon Air
+    "ATN": {"name": "Air Transport Intl",  "color": "#0288d1"},  # ATSG / Amazon Air
+    "PAC": {"name": "Polar Air Cargo",     "color": "#3f51b5"},
+    "CLX": {"name": "Cargolux",            "color": "#d32f2f"},
+    "CKS": {"name": "Kalitta Air",         "color": "#7b1fa2"},
+    "DHK": {"name": "DHL Air UK",          "color": "#ffc107"},
+    "BCS": {"name": "DHL Air Belgium",     "color": "#ffb300"},
+    "DAE": {"name": "DHL Aviation",        "color": "#fdd835"},
+    "BOX": {"name": "AeroLogic",           "color": "#f57c00"},  # DHL/Lufthansa JV
+    "GEC": {"name": "Lufthansa Cargo",     "color": "#ef6c00"},
+    "CKK": {"name": "China Cargo",         "color": "#c62828"},
+    "ABR": {"name": "ASL Airlines",        "color": "#00838f"},
+    "WGN": {"name": "Western Global",      "color": "#388e3c"},
+    "SQC": {"name": "Singapore Cargo",     "color": "#0277bd"},
+    "KZR": {"name": "Air Astana Cargo",    "color": "#009688"},
+    "ANX": {"name": "Air China Cargo",     "color": "#b71c1c"},
+    "BIE": {"name": "BIA / Cargojet",      "color": "#5d4037"},
+    "CJT": {"name": "Cargojet",            "color": "#5d4037"},
+}
+
+
+# --------------------------------------------------------------------------- #
+# Commodity universe.
 # --------------------------------------------------------------------------- #
 COMMODITIES = {
     "Crude Oil (WTI)":     "CL=F",

@@ -1,5 +1,5 @@
 """
-Ships page — AIS vessel snapshot + per-port congestion + chokepoint traffic.
+Ships page - AIS vessel snapshot + per-port congestion + chokepoint traffic.
 
 Reads pipelines.ports_vessels.read_snapshot(). When no AISStream key is
 configured we serve a deterministic synthetic snapshot (clearly marked as
@@ -28,7 +28,7 @@ from components import (
 from pipelines import bootstrap
 
 
-st.set_page_config(page_title="Ships — Pulse", layout="wide")
+st.set_page_config(page_title="Ships - Pulse", layout="wide")
 inject_global_css()
 bootstrap.ensure_bootstrap()
 st.markdown("## Live vessel traffic")
@@ -50,7 +50,7 @@ k2.metric("Ports monitored", len(config.MAJOR_PORTS))
 elevated = sum(1 for c in congestion if c["congestion"] >= 0.5)
 k3.metric("Ports with elevated density", elevated)
 snap_ts = vessels[0]["ts_utc"] if vessels else None
-k4.metric("Snapshot", snap_ts[11:19] + " UTC" if snap_ts else "—")
+k4.metric("Snapshot", snap_ts[11:19] + " UTC" if snap_ts else "-")
 
 
 # --------------------------------------------------------------------------- #

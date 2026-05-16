@@ -1,5 +1,5 @@
 """
-Trends & News — world pulse.
+Trends & News - world pulse.
 
 What this page answers:
     * What are people searching right now? (Google Trends, per country)
@@ -10,7 +10,7 @@ What this page answers:
     * What just hit the wire? (live Google News + Reddit feed)
 
 The first three blocks deliberately ignore the supply-chain category
-filter — they're a generic 'what's happening in the world' band so the
+filter - they're a generic 'what's happening in the world' band so the
 dashboard isn't blind to non-supply-chain stories that nonetheless
 move markets (elections, sports finals, big-tech earnings).
 """
@@ -38,7 +38,7 @@ from pipelines.global_trends import (
 )
 
 
-st.set_page_config(page_title="Trends & News — Pulse", layout="wide")
+st.set_page_config(page_title="Trends & News - Pulse", layout="wide")
 inject_global_css()
 bootstrap.ensure_bootstrap()
 
@@ -48,7 +48,7 @@ st.markdown(
     f"max-width:780px;line-height:1.5'>"
     "A real-time pulse on what the world is searching, reading, and writing "
     "about. The top half (Google Trends, Wikipedia, trending phrases) is "
-    "global — every topic, not just supply chain. The bottom half drills "
+    "global - every topic, not just supply chain. The bottom half drills "
     "back into the supply-chain news cycle."
     "</div>",
     unsafe_allow_html=True,
@@ -66,9 +66,9 @@ signals = apply_filters(all_signals, flt)
 
 
 # =========================================================================== #
-# SECTION 1 — Google Trends per country
+# SECTION 1 - Google Trends per country
 # =========================================================================== #
-st.markdown("### 🔥 Trending searches")
+st.markdown("### Trending searches")
 st.caption(
     "The queries surging on Google Search in the last ~24 hours, per country. "
     "Numbers are Google's own approximate daily-search-volume estimates."
@@ -96,7 +96,7 @@ else:
                 cs = st.columns(cols_per_row)
                 for c, item in zip(cs, chunk):
                     query = item["query"]
-                    traffic = item.get("traffic_str") or "—"
+                    traffic = item.get("traffic_str") or "-"
                     news_url = item.get("news_url") or "#"
                     news_title = item.get("news_title") or ""
                     img = item.get("image") or ""
@@ -136,12 +136,12 @@ else:
 
 
 # =========================================================================== #
-# SECTION 2 — Wikipedia most-viewed
+# SECTION 2 - Wikipedia most-viewed
 # =========================================================================== #
-st.markdown("### 📚 Most-read on Wikipedia")
+st.markdown("### Most-read on Wikipedia")
 st.caption(
     "The articles that pulled the most pageviews on English Wikipedia "
-    "yesterday — a clean readout of what people actually wanted to look up."
+    "yesterday - a clean readout of what people actually wanted to look up."
 )
 
 with st.spinner("Fetching Wikipedia top-viewed..."):
@@ -182,13 +182,13 @@ else:
 
 
 # =========================================================================== #
-# SECTION 3 — Trending phrases in news (bigrams)
+# SECTION 3 - Trending phrases in news (bigrams)
 # =========================================================================== #
-st.markdown("### 💬 Phrases trending in news")
+st.markdown("### Phrases trending in news")
 st.caption(
     "Two-word phrases that recur most across recent news headlines. A spike "
     "here often catches a breaking story faster than a single keyword would. "
-    "Built from every news + GDELT signal in your filter window — no theme "
+    "Built from every news + GDELT signal in your filter window - no theme "
     "buckets, no manual queries."
 )
 
@@ -245,7 +245,7 @@ else:
 
 
 # =========================================================================== #
-# SECTION 4 — Supply-chain news (the original page content, with captions)
+# SECTION 4 - Supply-chain news (the original page content, with captions)
 # =========================================================================== #
 st.divider()
 st.markdown("## Supply-chain news cycle")
@@ -263,7 +263,7 @@ reddit = [s for s in news_sigs if s.get("source") == "reddit"]
 
 # KPIs
 def _theme(s):
-    return (s.get("payload") or {}).get("theme") or "—"
+    return (s.get("payload") or {}).get("theme") or "-"
 
 
 themes = Counter(_theme(s) for s in gnews)
@@ -275,16 +275,16 @@ outlets = Counter(
 k1, k2, k3, k4 = st.columns(4)
 k1.metric("News articles",       f"{len(gnews):,}")
 k2.metric("Reddit posts",        f"{len(reddit):,}")
-k3.metric("Top theme",           themes.most_common(1)[0][0] if themes else "—")
+k3.metric("Top theme",           themes.most_common(1)[0][0] if themes else "-")
 k4.metric("Top outlet",
-          (outlets.most_common(1)[0][0][:24] if outlets else "—"))
+          (outlets.most_common(1)[0][0][:24] if outlets else "-"))
 
 
 # Theme volume bar
 st.markdown("### Theme volume")
 st.caption(
     "How many articles fell into each supply-chain theme bucket in your "
-    "filter window. Each bucket is a saved Google News query — see the "
+    "filter window. Each bucket is a saved Google News query - see the "
     "Source detail panel for the full list."
 )
 if not themes:
@@ -339,7 +339,7 @@ if gnews:
 st.markdown("### Single-word frequency")
 st.caption(
     "Most-frequent individual words across every signal title in the "
-    "current filter — news, weather alerts, GDELT articles, port alerts, "
+    "current filter - news, weather alerts, GDELT articles, port alerts, "
     "EONET events, all of it. Useful for catching surprise terms."
 )
 
@@ -381,9 +381,9 @@ if outlets:
 
 
 # =========================================================================== #
-# SECTION 5 — Live news feed (kept from previous design — user explicitly liked it)
+# SECTION 5 - Live news feed (kept from previous design - user explicitly liked it)
 # =========================================================================== #
-st.markdown("### 📰 Live news feed")
+st.markdown("### Live news feed")
 st.caption(
     "Latest individual articles. Click any headline to open the source in "
     "a new tab."

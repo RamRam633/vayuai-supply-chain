@@ -28,7 +28,7 @@ LISTEN_SECONDS = 60  # collect for ~1 minute then exit
 
 async def collect():
     if not config.AISSTREAM_API_KEY:
-        print("[ais] AISSTREAM_API_KEY missing — skipping.")
+        print("[ais] AISSTREAM_API_KEY missing - skipping.")
         return
 
     # Subscribe to a worldwide bounding box. AISStream lets you scope geos;

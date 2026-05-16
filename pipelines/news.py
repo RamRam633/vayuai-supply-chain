@@ -2,8 +2,8 @@
 News & social-trend pipeline.
 
 Sources (all free, no key):
-  * Google News RSS — article volume per supply-chain query
-  * Reddit RSS      — community discussion on r/supplychain, r/shipping,
+  * Google News RSS - article volume per supply-chain query
+  * Reddit RSS      - community discussion on r/supplychain, r/shipping,
                       r/Logistics, r/geopolitics
 
 We emit one Signal per article. Severity = base severity of the query type

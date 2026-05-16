@@ -186,7 +186,7 @@ def render_api_status() -> None:
         unsafe_allow_html=True,
     )
 
-    # Detail expander — only renders if anything is degraded so the page
+    # Detail expander - only renders if anything is degraded so the page
     # stays clean when everything's live.
     if overall != _OK:
         with st.expander("Source detail"):
@@ -222,12 +222,12 @@ def _render_detail(summary: dict, groups: list[tuple[str, str]]) -> None:
         demo=is_demo_vessels(), requires_key="AISSTREAM_API_KEY",
     )
     ais_note = (
-        "AISSTREAM_API_KEY missing — using deterministic synthetic vessel positions"
+        "AISSTREAM_API_KEY missing - using deterministic synthetic vessel positions"
         if not config.AISSTREAM_API_KEY
-        else ("Live AISStream WebSocket — positions refreshed every "
+        else ("Live AISStream WebSocket - positions refreshed every "
               f"{bootstrap.AIS_RECOLLECT_MINUTES} min")
         if not is_demo_vessels()
-        else "AIS listener hasn't completed its first cycle yet — showing demo positions"
+        else "AIS listener hasn't completed its first cycle yet - showing demo positions"
     )
     rows.append(_row("AISStream (vessels)", ais_status, ais_note))
     rows.append(_row(
@@ -264,7 +264,7 @@ def _render_detail(summary: dict, groups: list[tuple[str, str]]) -> None:
         demo=bool(commo_synth), requires_key="FRED_API_KEY",
     )
     commo_note = (
-        "FRED_API_KEY missing — falling back to Datahub.io daily mirrors plus synthetic"
+        "FRED_API_KEY missing - falling back to Datahub.io daily mirrors plus synthetic"
         if not config.FRED_API_KEY
         else (
             f"All commodity series live (FRED + Datahub)"
@@ -279,7 +279,7 @@ def _render_detail(summary: dict, groups: list[tuple[str, str]]) -> None:
         demo=is_demo_macro(), requires_key="FRED_API_KEY",
     )
     macro_note = (
-        "FRED_API_KEY missing — using Datahub mirrors + Frankfurter FX basket + synthetic"
+        "FRED_API_KEY missing - using Datahub mirrors + Frankfurter FX basket + synthetic"
         if not config.FRED_API_KEY
         else "FRED macro series live"
     )
@@ -295,7 +295,7 @@ def _render_detail(summary: dict, groups: list[tuple[str, str]]) -> None:
 
 
 # --------------------------------------------------------------------------- #
-# Cold-start banner — shows above the page body when there's no snapshot yet
+# Cold-start banner - shows above the page body when there's no snapshot yet
 # --------------------------------------------------------------------------- #
 def render_cold_start_banner_if_needed() -> bool:
     """If signals.json doesn't exist yet, show a friendly loading hint.
@@ -318,7 +318,7 @@ def render_cold_start_banner_if_needed() -> bool:
         st.info(msg)
     else:
         st.warning(
-            "No snapshot available yet. Use **Refresh data now** in the sidebar — "
+            "No snapshot available yet. Use **Refresh data now** in the sidebar - "
             "every public feed will populate in ~30 seconds."
         )
     return True

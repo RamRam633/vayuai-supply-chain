@@ -1,8 +1,8 @@
 """
-Active tropical cyclones — National Hurricane Center (NOAA NHC).
+Active tropical cyclones - National Hurricane Center (NOAA NHC).
 
 Free, no key. Covers Atlantic + Eastern Pacific basins. Western Pacific
-typhoons need JTWC scraping (no clean free API) — left for later.
+typhoons need JTWC scraping (no clean free API) - left for later.
 
 NHC publishes a JSON of active storms with classification, intensity, and
 current position. We emit one Signal per active storm, severity scaled by

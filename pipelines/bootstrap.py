@@ -11,11 +11,11 @@ the live deploy a soft scheduler that lives inside the web service:
        ~30s of the container booting.
 
     2. If AISSTREAM_API_KEY is set, spawn an AIS WebSocket listener that
-       collects ~60s of position reports, sleeps, repeats — so the Ships
+       collects ~60s of position reports, sleeps, repeats - so the Ships
        page shows real vessel positions instead of the demo snapshot.
 
 Threads are daemons; they exit with the process. Streamlit re-runs the
-page script on every interaction, so ensure_bootstrap() is idempotent —
+page script on every interaction, so ensure_bootstrap() is idempotent -
 the module-level lock guarantees we only spawn the workers once per
 process.
 """

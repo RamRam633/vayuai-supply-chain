@@ -2,8 +2,8 @@
 Geopolitical events pipeline.
 
 Sources:
-  - GDELT 2.0 DOC API (free, no key) — global event firehose with tone scoring
-  - GDACS (free, no key) — UN-affiliated humanitarian disaster alerts
+  - GDELT 2.0 DOC API (free, no key) - global event firehose with tone scoring
+  - GDACS (free, no key) - UN-affiliated humanitarian disaster alerts
     (replaces ReliefWeb v1, which started returning 410 Gone in 2026)
 
 Both feeds are noisy. We filter to supply-chain-relevant themes and weight by
@@ -46,7 +46,7 @@ def fetch_gdelt(hours_back: int = 24, max_records: int = 75) -> list[Signal]:
     """Pull recent GDELT articles tagged with supply-chain themes.
 
     Returns Signals with severity derived from negative tone.
-    Falls back to empty list on any error — never break the dashboard.
+    Falls back to empty list on any error - never break the dashboard.
     """
     global _GDELT_BACKOFF_UNTIL
     signals: list[Signal] = []
@@ -76,7 +76,7 @@ def fetch_gdelt(hours_back: int = 24, max_records: int = 75) -> list[Signal]:
         r.raise_for_status()
         data = r.json() or {}
     except Exception as e:
-        # Log and return empty — dashboard should degrade, not crash.
+        # Log and return empty - dashboard should degrade, not crash.
         print(f"[gdelt] fetch failed: {e}")
         return signals
 
@@ -116,7 +116,7 @@ def _parse_gdelt_ts(ts: str | None) -> str:
 
 
 # --------------------------------------------------------------------------- #
-# GDACS — Global Disaster Alert and Coordination System.
+# GDACS - Global Disaster Alert and Coordination System.
 # Replaces ReliefWeb v1/disasters, which started returning 410 Gone in 2026.
 # Free, no key, UN-affiliated. Returns active disasters with alert level,
 # country, type and coordinates.
@@ -205,7 +205,7 @@ def fetch_gdacs(limit: int = 60) -> list[Signal]:
 
 
 def fetch() -> list[Signal]:
-    """Pipeline entrypoint — combine all geopolitical sources."""
+    """Pipeline entrypoint - combine all geopolitical sources."""
     sigs = fetch_gdelt()
     try:
         sigs += fetch_gdacs()

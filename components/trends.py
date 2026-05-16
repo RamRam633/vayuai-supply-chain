@@ -1,5 +1,5 @@
 """
-Commodity & macro trend charts — light theme, with graceful empty-state.
+Commodity & macro trend charts - light theme, with graceful empty-state.
 """
 
 from __future__ import annotations
@@ -34,7 +34,7 @@ def render_trends() -> None:
         if df.empty:
             st.info(
                 "No commodity data available. yfinance is occasionally blocked "
-                "by Yahoo; Stooq fallback runs automatically — refresh data "
+                "by Yahoo; Stooq fallback runs automatically - refresh data "
                 "from the sidebar to retry."
             )
         else:

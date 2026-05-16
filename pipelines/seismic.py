@@ -1,5 +1,5 @@
 """
-Seismic activity — USGS GeoJSON feed.
+Seismic activity - USGS GeoJSON feed.
 Free, no key, real-time. We pull M4.5+ in the last 7 days.
 """
 
@@ -48,7 +48,7 @@ def fetch() -> list[Signal]:
             Signal(
                 source="usgs",
                 category="seismic",
-                title=f"M{mag:.1f} — {props.get('place', 'Unknown location')}",
+                title=f"M{mag:.1f} - {props.get('place', 'Unknown location')}",
                 severity=severity,
                 lat=lat,
                 lon=lon,

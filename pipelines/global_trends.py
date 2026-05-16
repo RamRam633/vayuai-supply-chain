@@ -1,5 +1,5 @@
 """
-Global trends — what the world is searching and reading right now.
+Global trends - what the world is searching and reading right now.
 
 Two free, no-key sources:
 
@@ -9,12 +9,12 @@ Two free, no-key sources:
        article. Endpoint:
             https://trends.google.com/trending/rss?geo=<ISO-3166-1 alpha-2>
 
-    2. Wikipedia pageviews "top" — the most-viewed articles on the
+    2. Wikipedia pageviews "top" - the most-viewed articles on the
        English Wikipedia for a given day. Endpoint:
             https://wikimedia.org/api/rest_v1/metrics/pageviews/top/
               en.wikipedia/all-access/YYYY/MM/DD
 
-These don't emit Signal records — they're surfaced directly on the
+These don't emit Signal records - they're surfaced directly on the
 Trends & News page as a "world pulse" panel alongside the existing
 supply-chain news feed.
 """
@@ -31,7 +31,7 @@ import config
 
 
 # --------------------------------------------------------------------------- #
-# Google Trends — daily trending searches per country
+# Google Trends - daily trending searches per country
 # --------------------------------------------------------------------------- #
 GOOGLE_TRENDS_RSS = "https://trends.google.com/trending/rss?geo={geo}"
 
@@ -116,14 +116,14 @@ def fetch_all_trends(geos: list[str] | None = None) -> dict[str, list[dict]]:
 
 
 # --------------------------------------------------------------------------- #
-# Wikipedia — most-viewed English-Wikipedia articles
+# Wikipedia - most-viewed English-Wikipedia articles
 # --------------------------------------------------------------------------- #
 WIKI_TOP_URL = (
     "https://wikimedia.org/api/rest_v1/metrics/pageviews/top/en.wikipedia/"
     "all-access/{y}/{m:02d}/{d:02d}"
 )
 
-# Skip these — they're not real "what the world is reading" entries.
+# Skip these - they're not real "what the world is reading" entries.
 _WIKI_BLOCKLIST_EXACT = {"Main_Page"}
 _WIKI_BLOCKLIST_PREFIX = (
     "Special:", "Wikipedia:", "File:", "Portal:", "Help:", "Category:",

@@ -1,5 +1,5 @@
 """
-Regional risk score panel — horizontal bars + component breakdown table.
+Regional risk score panel - horizontal bars + component breakdown table.
 Light-theme palette, colour ramp warming as score rises.
 """
 

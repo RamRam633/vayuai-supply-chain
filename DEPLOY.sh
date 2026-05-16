@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Global Supply Chain Pulse — deploy walkthrough.
+# Global Supply Chain Pulse - deploy walkthrough.
 #
 # Run blocks one at a time. Each block is independent. Read the comments first.
 #
@@ -62,7 +62,7 @@ git)
   #   git branch -M main && git push -u origin main
 
   if [ -d .git ]; then
-    echo "[git] repo already initialized — pushing latest changes"
+    echo "[git] repo already initialized - pushing latest changes"
     git add -A
     git commit -m "deploy: update" || echo "nothing to commit"
     git push
@@ -76,7 +76,7 @@ git)
 
   # Make sure .env is NOT committed (it's already in .gitignore but double-check)
   if git ls-files --error-unmatch .env >/dev/null 2>&1; then
-    echo "ERROR: .env is staged. Aborting — remove secrets first."
+    echo "ERROR: .env is staged. Aborting - remove secrets first."
     exit 1
   fi
 
@@ -105,7 +105,7 @@ Render deploys the Streamlit app + the 15-min cron job from render.yaml.
         NOAA_USER_AGENT      (e.g. "SupplyChainPulse/1.0 (you@example.com)")
         ANTHROPIC_API_KEY    (leave blank if you're not using Claude summary)
   6. Click "Apply". First build takes ~5 min.
-  7. When the web service is green, copy its URL — looks like:
+  7. When the web service is green, copy its URL - looks like:
         https://supply-chain-pulse.onrender.com
 
 Note: the free tier sleeps after 15 min idle. Upgrade to Starter ($7/mo) if

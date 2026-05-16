@@ -1,5 +1,5 @@
 """
-Events page — searchable, filterable global event feed with intelligence.
+Events page - searchable, filterable global event feed with intelligence.
 """
 
 from __future__ import annotations
@@ -18,7 +18,7 @@ from components import (
 from pipelines import bootstrap
 
 
-st.set_page_config(page_title="Events — Pulse", layout="wide")
+st.set_page_config(page_title="Events - Pulse", layout="wide")
 inject_global_css()
 bootstrap.ensure_bootstrap()
 st.markdown("## Global event feed")
@@ -31,7 +31,7 @@ flt = render_filters_sidebar(country_options=country_options)
 signals = apply_filters(all_signals, flt)
 filter_summary_caption(flt, len(all_signals), len(signals))
 
-# Cold-start banner — explains the empty state on first load.
+# Cold-start banner - explains the empty state on first load.
 cold = render_cold_start_banner_if_needed()
 
 if not signals:

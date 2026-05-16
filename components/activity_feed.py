@@ -1,5 +1,5 @@
 """
-Global activity feed — vertical list of recent signals, severity-ranked.
+Global activity feed - vertical list of recent signals, severity-ranked.
 Light-theme cards with a category-colored left rail.
 """
 

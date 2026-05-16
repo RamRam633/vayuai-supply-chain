@@ -1,8 +1,8 @@
 """
-Shared sidebar filters — deep but defaulting to fully-on.
+Shared sidebar filters - deep but defaulting to fully-on.
 
 Layout (top to bottom):
-    Preset chips        — one-click slicers ("Critical 24h", "Maritime",
+    Preset chips        - one-click slicers ("Critical 24h", "Maritime",
                           "Aviation", "Disasters", "Reset")
     Time window
     Severity range
@@ -12,7 +12,7 @@ Layout (top to bottom):
     Countries           (multi-select, populated from data)
     Free-text search
 
-Every filter starts permissive — the user sees everything until they
+Every filter starts permissive - the user sees everything until they
 deliberately narrow.
 """
 
@@ -214,7 +214,7 @@ def apply_filters(signals: list[dict], flt: dict) -> list[dict]:
         # Free-text search
         if q and q not in (s.get("title") or "").lower():
             continue
-        # Region filter — commodity/macro are global signals
+        # Region filter - commodity/macro are global signals
         if s.get("category") in ("commodity", "macro"):
             out.append(s)
             continue
@@ -233,7 +233,7 @@ def apply_filters(signals: list[dict], flt: dict) -> list[dict]:
 
 
 def filter_summary_caption(flt: dict, original: int, filtered: int) -> None:
-    """Show what's been narrowed — a single line below the title."""
+    """Show what's been narrowed - a single line below the title."""
     chips = [
         f"<span class='pulse-pill'>{flt['window_label']}</span>",
         f"<span class='pulse-pill'>severity {flt['min_severity']:.2f}–{flt['max_severity']:.2f}</span>",

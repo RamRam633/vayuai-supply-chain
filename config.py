@@ -32,7 +32,7 @@ ENABLE_CLAUDE_SUMMARY = os.getenv("ENABLE_CLAUDE_SUMMARY", "false").lower() == "
 REFRESH_INTERVAL_MINUTES = int(os.getenv("REFRESH_INTERVAL_MINUTES", "15"))
 
 # --------------------------------------------------------------------------- #
-# Regions — used for risk-score rollups and map filtering.
+# Regions - used for risk-score rollups and map filtering.
 # Bounding boxes are (min_lon, min_lat, max_lon, max_lat).
 # --------------------------------------------------------------------------- #
 REGIONS = {
@@ -48,7 +48,7 @@ REGIONS = {
 }
 
 # --------------------------------------------------------------------------- #
-# Critical chokepoints — these get special highlight on the map.
+# Critical chokepoints - these get special highlight on the map.
 # Coordinates approximate, used for proximity-based event tagging.
 # --------------------------------------------------------------------------- #
 CHOKEPOINTS = [
@@ -63,7 +63,7 @@ CHOKEPOINTS = [
 ]
 
 # --------------------------------------------------------------------------- #
-# Major cargo airports — used by the flights pipeline for proximity counts.
+# Major cargo airports - used by the flights pipeline for proximity counts.
 # Coordinates are airport reference points; cargo_rank ~= 2024 global ranking.
 # --------------------------------------------------------------------------- #
 MAJOR_AIRPORTS = [
@@ -96,7 +96,7 @@ MAJOR_AIRPORTS = [
 
 
 # --------------------------------------------------------------------------- #
-# Major ports — used for activity feed and congestion proxy.
+# Major ports - used for activity feed and congestion proxy.
 # --------------------------------------------------------------------------- #
 MAJOR_PORTS = [
     {"name": "Shanghai",        "country": "CN", "lat": 31.23,  "lon": 121.47},
@@ -157,21 +157,21 @@ RISK_WEIGHTS = {
 }
 
 # --------------------------------------------------------------------------- #
-# Cache TTLs in seconds — per-source so volatile feeds refresh faster.
+# Cache TTLs in seconds - per-source so volatile feeds refresh faster.
 # --------------------------------------------------------------------------- #
 CACHE_TTL = {
-    "ais_snapshot":     5 * 60,      # 5 min — vessels move
-    "flight_snapshot":  60,          # 1 min — aircraft move fast
-    "gdelt":            10 * 60,     # 10 min — event firehose
-    "gdacs":            30 * 60,     # 30 min — GDACS event list
+    "ais_snapshot":     5 * 60,      # 5 min - vessels move
+    "flight_snapshot":  60,          # 1 min - aircraft move fast
+    "gdelt":            10 * 60,     # 10 min - event firehose
+    "gdacs":            30 * 60,     # 30 min - GDACS event list
     "usgs_quakes":      10 * 60,
-    "eonet":            15 * 60,     # 15 min — natural events update slowly
-    "nhc":              10 * 60,     # 10 min — NHC advisories every few hours
+    "eonet":            15 * 60,     # 15 min - natural events update slowly
+    "nhc":              10 * 60,     # 10 min - NHC advisories every few hours
     "noaa_alerts":      10 * 60,
-    "open_meteo":       60 * 60,     # 1 h — weather changes slowly at country scale
+    "open_meteo":       60 * 60,     # 1 h - weather changes slowly at country scale
     "yfinance":         15 * 60,     # 15 min during market hours
-    "fred":             6 * 60 * 60, # 6 h — macro series update slowly
-    "news":             15 * 60,     # 15 min — RSS feeds (Google News, Reddit)
+    "fred":             6 * 60 * 60, # 6 h - macro series update slowly
+    "news":             15 * 60,     # 15 min - RSS feeds (Google News, Reddit)
     "world_bank":       24 * 60 * 60,
     "claude_summary":   30 * 60,     # don't burn tokens
 }

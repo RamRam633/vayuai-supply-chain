@@ -1,5 +1,5 @@
 """
-Commodities page — full daily history, FRED macro/freight series,
+Commodities page - full daily history, FRED macro/freight series,
 and any commodity/macro signals that fired.
 """
 
@@ -23,7 +23,7 @@ from components import (
 from pipelines import bootstrap
 
 
-st.set_page_config(page_title="Commodities — Pulse", layout="wide")
+st.set_page_config(page_title="Commodities - Pulse", layout="wide")
 inject_global_css()
 bootstrap.ensure_bootstrap()
 st.markdown("## Commodity & macro detail")
@@ -38,7 +38,7 @@ render_cold_start_banner_if_needed()
 df = fetch_prices()
 if df.empty:
     st.warning(
-        "No commodity price history available — the FRED and Datahub fetches "
+        "No commodity price history available - the FRED and Datahub fetches "
         "both failed on the last refresh. Try **Refresh data now** in the "
         "sidebar; details are in the API health strip at the bottom of the page."
     )
@@ -151,7 +151,7 @@ else:
             apply_light(
                 fig, height=460,
                 title=dict(
-                    text=f"{choice} — last close ${series.iloc[-1]:.2f}",
+                    text=f"{choice} - last close ${series.iloc[-1]:.2f}",
                     font=dict(size=14),
                 ),
                 legend=dict(orientation="h", y=-0.18, x=0, xanchor="left"),
@@ -207,7 +207,7 @@ else:
                     apply_light(
                         fig_s, height=200,
                         margin=dict(l=10, r=10, t=30, b=10),
-                        title=dict(text=f"{col_name} — {s.iloc[-1]:.2f}",
+                        title=dict(text=f"{col_name} - {s.iloc[-1]:.2f}",
                                    font=dict(size=12)),
                         showlegend=False,
                     )
@@ -242,7 +242,7 @@ if not series:
     st.info(
         "No macro series available right now. Without a `FRED_API_KEY` the "
         "page falls back to Datahub.io daily mirrors plus a Frankfurter FX "
-        "basket — both failed on the last refresh."
+        "basket - both failed on the last refresh."
     )
 else:
     for name, s in series.items():

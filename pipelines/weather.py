@@ -3,7 +3,7 @@ Weather pipeline.
 
 Sources:
   - NOAA NWS alerts (free, US-focused but covers PR/AK/HI and shipping zones)
-  - Open-Meteo (free, global, no key) — used to check storm conditions
+  - Open-Meteo (free, global, no key) - used to check storm conditions
     near each MAJOR_PORT.
 
 For the MVP we treat 'active NOAA alert' and 'high wind/precip near port'
@@ -65,7 +65,7 @@ def fetch_noaa_alerts() -> list[Signal]:
             Signal(
                 source="noaa",
                 category="weather",
-                title=f"{event} — {props.get('areaDesc', '')[:120]}",
+                title=f"{event} - {props.get('areaDesc', '')[:120]}",
                 severity=severity,
                 lat=lat,
                 lon=lon,

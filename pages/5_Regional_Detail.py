@@ -1,5 +1,5 @@
 """
-Regional Detail page — drill into one region with score trend, component
+Regional Detail page - drill into one region with score trend, component
 breakdown, signal mix, and a sortable signal table.
 """
 
@@ -23,7 +23,7 @@ from components import (
 from pipelines import bootstrap
 
 
-st.set_page_config(page_title="Region — Pulse", layout="wide")
+st.set_page_config(page_title="Region - Pulse", layout="wide")
 inject_global_css()
 bootstrap.ensure_bootstrap()
 st.markdown("## Regional drill-down")
@@ -40,7 +40,7 @@ meta = regional.get(region) or {"score": 0, "components": {}, "n_signals": 0}
 
 
 # --------------------------------------------------------------------------- #
-# Header — gauge + components
+# Header - gauge + components
 # --------------------------------------------------------------------------- #
 left, right = st.columns([1, 1.1])
 

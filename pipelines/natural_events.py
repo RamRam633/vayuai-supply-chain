@@ -1,5 +1,5 @@
 """
-Natural events pipeline — NASA EONET v3.
+Natural events pipeline - NASA EONET v3.
 
 Free, no key. Open events across wildfires, volcanoes, severe storms, dust/haze,
 floods, drought, landslides, sea/lake ice, tempExtremes, manmade incidents.

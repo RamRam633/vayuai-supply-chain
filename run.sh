@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Global Supply Chain Pulse — local run helper.
+# Global Supply Chain Pulse - local run helper.
 # Usage:
 #   ./run.sh setup     # one-time: create venv, install deps, copy .env
 #   ./run.sh refresh   # pull fresh data from all free APIs (run anytime)

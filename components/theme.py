@@ -1,5 +1,5 @@
 """
-Shared theme — vayuai.ai dark + gold + serif.
+Shared theme - vayuai.ai dark + gold + serif.
 
 Aligned with the main vayuai.ai site:
     background  → deep charcoal #0b0a09
@@ -22,26 +22,26 @@ import streamlit as st
 # --------------------------------------------------------------------------- #
 # Color tokens
 # --------------------------------------------------------------------------- #
-BG               = "#0b0a09"   # page background — deep charcoal
+BG               = "#0b0a09"   # page background - deep charcoal
 BG_MUTED         = "#131110"   # elevated surface (cards, sidebar)
 BG_SUBTLE        = "#181513"   # hover / striped row tint
 BORDER           = "#2a2520"   # hairline divider
 BORDER_STRONG    = "#3a3530"   # button outline, focus rings
 
-TEXT             = "#f5f1e8"   # warm cream — primary text
+TEXT             = "#f5f1e8"   # warm cream - primary text
 TEXT_MUTED       = "#b9b2a2"   # secondary text, captions
 TEXT_SUBTLE      = "#807868"   # tertiary text, eyebrow labels
 
-ACCENT           = "#d4af37"   # gold — primary accent
-ACCENT_DEEP      = "#e7c764"   # soft gold — hover, highlights
+ACCENT           = "#d4af37"   # gold - primary accent
+ACCENT_DEEP      = "#e7c764"   # soft gold - hover, highlights
 
-CRITICAL         = "#e85a5a"   # vivid red — severity ≥ 0.7 / down dots
-WARNING          = "#e07a35"   # ember — severity ≥ 0.4 / partial dots
+CRITICAL         = "#e85a5a"   # vivid red - severity ≥ 0.7 / down dots
+WARNING          = "#e07a35"   # ember - severity ≥ 0.4 / partial dots
 INFO             = "#7b9aba"   # cool blue
-SUCCESS          = "#84a17d"   # muted sage — live dots
+SUCCESS          = "#84a17d"   # muted sage - live dots
 PURPLE           = "#c499e8"
 
-# Category color tokens — brightened for dark-background readability.
+# Category color tokens - brightened for dark-background readability.
 CATEGORY_COLOR = {
     "geopolitical": "#e85a5a",
     "weather":      "#7b9aba",
@@ -70,7 +70,7 @@ CATEGORY_COLOR_RGBA = {
     "news":         [212, 212, 207, 200],
 }
 
-# Discrete plot palette — tuned for 5-10 series on dark bg, gold-led.
+# Discrete plot palette - tuned for 5-10 series on dark bg, gold-led.
 PALETTE = [
     "#d4af37",   # gold
     "#e7c764",   # soft gold
@@ -86,7 +86,7 @@ PALETTE = [
 
 
 # --------------------------------------------------------------------------- #
-# Plotly helper — dark template + cream text + gold leading color
+# Plotly helper - dark template + cream text + gold leading color
 # --------------------------------------------------------------------------- #
 def apply_light(fig: go.Figure, **overrides) -> go.Figure:
     """Apply the vayuai dark theme to a Plotly Figure in place. Returns the fig.
@@ -133,7 +133,7 @@ def apply_light(fig: go.Figure, **overrides) -> go.Figure:
 
 
 # --------------------------------------------------------------------------- #
-# Global CSS — vayuai dark, Fraunces+Inter+JetBrains Mono
+# Global CSS - vayuai dark, Fraunces+Inter+JetBrains Mono
 # --------------------------------------------------------------------------- #
 _FONTS_LINK = (
     "https://fonts.googleapis.com/css2?"
@@ -142,12 +142,14 @@ _FONTS_LINK = (
     "family=JetBrains+Mono:wght@400;500;600&display=swap"
 )
 
+# Single style block. Streamlit's markdown sanitizer drops <link> tags,
+# which would leak the subsequent <style> into the page as text. Importing
+# fonts via @import inside <style> keeps everything in one trusted block.
 GLOBAL_CSS = f"""
-<link rel='preconnect' href='https://fonts.googleapis.com'>
-<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
-<link href='{_FONTS_LINK}' rel='stylesheet'>
 <style>
-  /* --- Layout ---------------------------------------------------------- */
+  @import url('{_FONTS_LINK}');
+
+  /* Layout */
   .block-container {{
     padding-top: 1.0rem;
     padding-bottom: 2rem;
@@ -246,7 +248,7 @@ GLOBAL_CSS = f"""
     font-weight: 500;
     margin: 0;
   }}
-  /* Primary button — gold pill */
+  /* Primary button - gold pill */
   .stButton > button[kind="primary"] {{
     background: {ACCENT};
     border-color: {ACCENT};
@@ -393,7 +395,7 @@ def inject_global_css() -> None:
 
 
 # --------------------------------------------------------------------------- #
-# pydeck helpers — dark CARTO basemap
+# pydeck helpers - dark CARTO basemap
 # --------------------------------------------------------------------------- #
 def map_kwargs() -> dict:
     """Shared pydeck Deck() kwargs for a dark CARTO basemap.

@@ -1,7 +1,7 @@
 """
 Live flights pipeline.
 
-Source: OpenSky Network /states/all — global aircraft state-vectors, free,
+Source: OpenSky Network /states/all - global aircraft state-vectors, free,
 anonymous (rate-limited to ~once per 10 s). No key required.
 
 We do three things per refresh:
@@ -11,7 +11,7 @@ We do three things per refresh:
   3. Emit a Signal per major cargo airport whose nearby airborne density is
      anomalously high (proxy for holding patterns / ground-stop downstream).
 
-Falls back to empty list on any failure — never crashes the dashboard.
+Falls back to empty list on any failure - never crashes the dashboard.
 """
 
 from __future__ import annotations
@@ -46,14 +46,14 @@ _IDX = {
     "squawk":        14,
 }
 
-# Density thresholds — calibrated against a quiet evening at major hubs.
+# Density thresholds - calibrated against a quiet evening at major hubs.
 AIRPORT_RADIUS_KM = 80
 AIRPORT_CONGESTION_HIGH = 30   # signal level
 AIRPORT_CONGESTION_MAX = 80    # severity = 1.0 at/above this
 
 
 # --------------------------------------------------------------------------- #
-# Snapshot DB — Streamlit Flights page reads this.
+# Snapshot DB - Streamlit Flights page reads this.
 # --------------------------------------------------------------------------- #
 def _ensure_db() -> None:
     FLIGHT_SNAPSHOT_DB.parent.mkdir(exist_ok=True)
@@ -84,7 +84,7 @@ def write_snapshot(rows: list[dict]) -> int:
     _ensure_db()
     con = sqlite3.connect(FLIGHT_SNAPSHOT_DB)
     cur = con.cursor()
-    # Replace prior snapshot wholesale — aircraft move fast and old rows are
+    # Replace prior snapshot wholesale - aircraft move fast and old rows are
     # noise once a new snapshot arrives.
     cur.execute("DELETE FROM flights")
     for r in rows:
@@ -143,7 +143,7 @@ def _haversine(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
 
 def fetch_states() -> list[dict]:
     """Pull the global /states/all snapshot. Returns parsed rows; empty on failure."""
-    session = get_session(expire_after=60)  # cache 1 minute — aircraft move fast
+    session = get_session(expire_after=60)  # cache 1 minute - aircraft move fast
     try:
         r = session.get(OPENSKY_URL, timeout=25)
         r.raise_for_status()

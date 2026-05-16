@@ -1,5 +1,5 @@
 """
-Chokepoints page — global supply-chain choke health.
+Chokepoints page - global supply-chain choke health.
 
 For each of the 8 strategic chokepoints we surface:
   * vessel density inside the radius
@@ -30,7 +30,7 @@ from components import (
 from pipelines import bootstrap
 
 
-st.set_page_config(page_title="Chokepoints — Pulse", layout="wide")
+st.set_page_config(page_title="Chokepoints - Pulse", layout="wide")
 inject_global_css()
 bootstrap.ensure_bootstrap()
 st.markdown("## Strategic chokepoint health")

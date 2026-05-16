@@ -1,5 +1,5 @@
 """
-Port Detail page — pick any major port and see local vessel density,
+Port Detail page - pick any major port and see local vessel density,
 nearby events, current live weather, and a 90-day commodity view that
 filters to commodities most relevant to the port's region.
 """
@@ -25,7 +25,7 @@ from components import (
 from pipelines import bootstrap
 
 
-st.set_page_config(page_title="Port — Pulse", layout="wide")
+st.set_page_config(page_title="Port - Pulse", layout="wide")
 inject_global_css()
 bootstrap.ensure_bootstrap()
 st.markdown("## Port drill-down")

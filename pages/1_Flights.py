@@ -1,5 +1,5 @@
 """
-Flights page — live aircraft snapshot + per-airport congestion drilldown.
+Flights page - live aircraft snapshot + per-airport congestion drilldown.
 """
 
 from __future__ import annotations
@@ -26,7 +26,7 @@ from components import (
 from pipelines import bootstrap
 
 
-st.set_page_config(page_title="Flights — Pulse", layout="wide")
+st.set_page_config(page_title="Flights - Pulse", layout="wide")
 inject_global_css()
 bootstrap.ensure_bootstrap()
 st.markdown("## Live air traffic")
@@ -46,12 +46,12 @@ k1.metric("Aircraft tracked", f"{len(flights):,}")
 k2.metric("Airborne",         f"{len(airborne):,}")
 k3.metric("On ground",        f"{len(on_ground):,}")
 snap_ts = flights[0]["ts_utc"] if flights else None
-k4.metric("Snapshot", snap_ts[11:19] + " UTC" if snap_ts else "—")
+k4.metric("Snapshot", snap_ts[11:19] + " UTC" if snap_ts else "-")
 
 if not flights:
     st.info(
         "No flight snapshot yet. The background refresh fetches a global "
-        "OpenSky snapshot every few minutes — try again shortly, or click "
+        "OpenSky snapshot every few minutes - try again shortly, or click "
         "**Refresh data now** in the sidebar to force a fetch."
     )
     render_api_status()

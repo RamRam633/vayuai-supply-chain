@@ -1,5 +1,5 @@
 """
-Macro / freight indices — resilient three-tier fetch:
+Macro / freight indices - resilient three-tier fetch:
 
     1. FRED API                        (if FRED_API_KEY is set)
     2. Free, key-less mirrors          (Datahub.io for oil/gas, Frankfurter.app
@@ -27,7 +27,7 @@ DEMO_MARKER = Path(config.DATA_DIR) / "macro_demo.marker"
 
 
 # --------------------------------------------------------------------------- #
-# Tier 1 — FRED
+# Tier 1 - FRED
 # --------------------------------------------------------------------------- #
 FRED_OBS_URL = "https://api.stlouisfed.org/fred/series/observations"
 
@@ -67,7 +67,7 @@ def _fred_series(series_id: str, limit: int = 365) -> pd.Series:
 
 
 # --------------------------------------------------------------------------- #
-# Tier 2 — free no-key sources
+# Tier 2 - free no-key sources
 # --------------------------------------------------------------------------- #
 _DATAHUB = {
     "WTI Crude (USD/bbl)":     "https://datahub.io/core/oil-prices/r/wti-daily.csv",
@@ -127,7 +127,7 @@ def _frankfurter_usd_index(days: int = 180) -> pd.Series:
         if not used:
             continue
         total_w = sum(weights[k] for k in used) or 1.0
-        # Index level = weighted geometric mean of USD value (1/rate) — higher
+        # Index level = weighted geometric mean of USD value (1/rate) - higher
         # when USD is stronger.
         log_sum = sum(weights[k] * math.log(1.0 / used[k]) for k in used)
         idx = math.exp(log_sum / total_w)
@@ -139,7 +139,7 @@ def _frankfurter_usd_index(days: int = 180) -> pd.Series:
 
 
 # --------------------------------------------------------------------------- #
-# Tier 3 — synthetic
+# Tier 3 - synthetic
 # --------------------------------------------------------------------------- #
 _SYNTH_ANCHORS = {
     "10Y Treasury Yield":      4.55,
@@ -200,10 +200,10 @@ def _clear_demo() -> None:
 
 
 # --------------------------------------------------------------------------- #
-# Public API — keep same shape so trends.py / pages keep working unchanged.
+# Public API - keep same shape so trends.py / pages keep working unchanged.
 # --------------------------------------------------------------------------- #
 def fetch_series(series_id: str, limit: int = 365) -> pd.Series:
-    """Compatibility shim — looks up display-name by series_id, then falls through."""
+    """Compatibility shim - looks up display-name by series_id, then falls through."""
     name = next(
         (k for k, v in config.FRED_SERIES.items() if v == series_id),
         series_id,

@@ -1,16 +1,16 @@
 """
-Global Supply Chain Pulse — Streamlit Overview (light theme).
+Global Supply Chain Pulse - Streamlit Overview (light theme).
 
 The dashboard is multipage:
-    app.py                        — this overview
-    pages/1_Flights.py            — live air traffic
-    pages/2_Ships.py              — vessel positions & port congestion
-    pages/3_Events.py             — searchable global event feed
-    pages/4_Commodities.py        — full commodity / macro time series
-    pages/5_Regional_Detail.py    — drill into one region
-    pages/6_Port_Detail.py        — drill into one port
-    pages/7_Chokepoints.py        — chokepoint health & exposure
-    pages/8_Trends_News.py        — news volume + market trends
+    app.py                        - this overview
+    pages/1_Flights.py            - live air traffic
+    pages/2_Ships.py              - vessel positions & port congestion
+    pages/3_Events.py             - searchable global event feed
+    pages/4_Commodities.py        - full commodity / macro time series
+    pages/5_Regional_Detail.py    - drill into one region
+    pages/6_Port_Detail.py        - drill into one port
+    pages/7_Chokepoints.py        - chokepoint health & exposure
+    pages/8_Trends_News.py        - news volume + market trends
 """
 
 from __future__ import annotations
@@ -54,12 +54,12 @@ st.set_page_config(
 inject_global_css()
 
 # Kick the cold-start bootstrap on the very first render of this process.
-# Idempotent — subsequent reruns are no-ops.
+# Idempotent - subsequent reruns are no-ops.
 bootstrap.ensure_bootstrap()
 
 
 # --------------------------------------------------------------------------- #
-# Sidebar — snapshot info, refresh, filters
+# Sidebar - snapshot info, refresh, filters
 # --------------------------------------------------------------------------- #
 with st.sidebar:
     st.markdown(
@@ -120,7 +120,7 @@ with st.sidebar:
 signals = apply_filters(all_signals, flt)
 regional = compute_regional_risk(signals, lookback_hours=flt["lookback_hours"])
 top = top_risks(regional, n=1)
-worst_region = top[0] if top else ("—", 0.0)
+worst_region = top[0] if top else ("-", 0.0)
 
 flights_now = read_flights()
 vessels_now = read_vessels()
@@ -157,7 +157,7 @@ st.markdown(
 )
 filter_summary_caption(flt, len(all_signals), len(signals))
 
-# Cold-start banner — only renders when there's no snapshot yet.
+# Cold-start banner - only renders when there's no snapshot yet.
 cold_start = render_cold_start_banner_if_needed()
 
 st.markdown("&nbsp;", unsafe_allow_html=True)
@@ -176,7 +176,7 @@ render_top_movers(regional, score_deltas())
 
 
 # --------------------------------------------------------------------------- #
-# KPIs — 8 metrics, two rows
+# KPIs - 8 metrics, two rows
 # --------------------------------------------------------------------------- #
 row1 = st.columns(4)
 row1[0].metric("Active signals", f"{len(signals):,}")
@@ -282,14 +282,14 @@ with right:
 
 
 # --------------------------------------------------------------------------- #
-# Footer — unified API health strip + disclosure
+# Footer - unified API health strip + disclosure
 # --------------------------------------------------------------------------- #
 render_api_status()
 
 st.caption(
     "Open **Flights**, **Ships**, **Events**, **Commodities**, "
     "**Regional Detail**, **Port Detail**, **Chokepoints** in the sidebar for "
-    "granular drilldowns. Public data — GDELT, GDACS, USGS, NOAA, Open-Meteo, "
+    "granular drilldowns. Public data - GDELT, GDACS, USGS, NOAA, Open-Meteo, "
     "NHC, NASA EONET, OpenSky, AISStream, FRED, Datahub, Google News, Reddit. "
     "Situational-awareness tool, not operational or investment advice."
 )

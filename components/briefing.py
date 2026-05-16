@@ -2,7 +2,7 @@
 Auto-generated briefing strip + supporting intelligence widgets.
 
 The briefing strip is the "what should I know in the next 30 seconds"
-card — three to five computed insights pulled from the current signal
+card - three to five computed insights pulled from the current signal
 snapshot, with no LLM call. It runs every page load.
 """
 
@@ -119,7 +119,7 @@ def _chokepoint_insight(signals: list[dict]) -> str | None:
 # Render
 # --------------------------------------------------------------------------- #
 def render_briefing(signals: list[dict], regional: dict) -> None:
-    """Top-of-page intelligence card — 3 to 6 computed bullets."""
+    """Top-of-page intelligence card - 3 to 6 computed bullets."""
     extractors = [
         _top_region_insight(regional),
         _commodity_mover_insight(signals),
@@ -159,7 +159,7 @@ def render_briefing(signals: list[dict], regional: dict) -> None:
 # Pressure heatmap (region × component)
 # --------------------------------------------------------------------------- #
 def render_pressure_heatmap(regional: dict) -> None:
-    """Heatmap of regions × risk components — at-a-glance pressure map."""
+    """Heatmap of regions × risk components - at-a-glance pressure map."""
     if not regional:
         return
     rows = []
@@ -195,7 +195,7 @@ def render_pressure_heatmap(regional: dict) -> None:
 
 
 # --------------------------------------------------------------------------- #
-# Top movers strip — uses analytics.history.score_deltas() if available
+# Top movers strip - uses analytics.history.score_deltas() if available
 # --------------------------------------------------------------------------- #
 def render_top_movers(regional: dict, deltas: dict[str, float] | None) -> None:
     """Compact strip showing regions whose score moved most since last refresh."""

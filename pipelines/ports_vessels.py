@@ -5,7 +5,7 @@ Live AIS data comes from `scripts/refresh_ais.py` (a separate WebSocket
 listener) which requires a free AISStream key. When that snapshot is
 present we read it. When it isn't, we fall back to a deterministic
 *synthetic* vessel distribution clustered around real ports, chokepoints
-and the busiest shipping lanes — so the dashboard is never blank.
+and the busiest shipping lanes - so the dashboard is never blank.
 
 The Streamlit Ships page surfaces a clear banner when the snapshot is
 synthetic so users know the source.
@@ -88,7 +88,7 @@ def write_snapshot(rows: list[dict]) -> int:
     con.commit()
     n = cur.execute("SELECT COUNT(*) FROM vessels").fetchone()[0]
     con.close()
-    # Real data was written — drop the demo marker if it exists.
+    # Real data was written - drop the demo marker if it exists.
     try:
         DEMO_MARKER.unlink(missing_ok=True)
     except Exception:
@@ -152,7 +152,7 @@ def _generate_demo_vessels(seed: int = 42) -> list[dict]:
             vessels.append(_make_vessel(rng, lat, lon, mmsi))
 
     # Vessels in transit along major shipping lanes (linear interpolation
-    # plus scatter — fine for visualization, not for navigation).
+    # plus scatter - fine for visualization, not for navigation).
     ports_by = {p["name"]: p for p in config.MAJOR_PORTS}
     lanes = [
         ("Shanghai",            "Los Angeles"),
@@ -193,7 +193,7 @@ def _ensure_demo_snapshot_if_empty() -> bool:
     if n > 0:
         return DEMO_MARKER.exists()
 
-    # No real vessels — generate demo set.
+    # No real vessels - generate demo set.
     demo = _generate_demo_vessels()
     con = sqlite3.connect(SNAPSHOT_DB)
     cur = con.cursor()

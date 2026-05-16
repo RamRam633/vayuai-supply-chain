@@ -1,5 +1,5 @@
 """
-Executive summary block — local rule-based or Claude-generated, rendered in
+Executive summary block - local rule-based or Claude-generated, rendered in
 the light theme card.
 """
 

@@ -1,5 +1,5 @@
 """
-Commodity prices — FRED-first, with Datahub.io daily mirrors for the three
+Commodity prices - FRED-first, with Datahub.io daily mirrors for the three
 energy series.
 
 History (2026-05):
@@ -8,12 +8,12 @@ History (2026-05):
     from most US data centers. Both have been removed. The pipeline now
     relies on:
 
-        1. FRED (St. Louis Fed) — primary, requires a free FRED_API_KEY.
+        1. FRED (St. Louis Fed) - primary, requires a free FRED_API_KEY.
            Covers all 10 commodities; daily for oil/gas/gold, monthly for
            grains/metals (forward-filled to daily on display).
-        2. Datahub.io daily CSV mirrors — secondary, no key. Covers WTI,
+        2. Datahub.io daily CSV mirrors - secondary, no key. Covers WTI,
            Brent, Natural Gas, Gold. Useful even without the FRED key.
-        3. Synthetic deterministic series — only used for the few
+        3. Synthetic deterministic series - only used for the few
            commodities neither source can supply. Clearly flagged via
            data/commodities_demo.marker so the UI can surface a banner.
 
@@ -59,7 +59,7 @@ _FRED_IDS = {
     "Aluminum":        "PALUMUSDM",
 }
 
-# Datahub.io curated CSV mirrors — Date,Price columns. Used as a secondary
+# Datahub.io curated CSV mirrors - Date,Price columns. Used as a secondary
 # source so the energy series still light up without a FRED key.
 _DATAHUB_CSVS = {
     "Crude Oil (WTI)": "https://datahub.io/core/oil-prices/r/wti-daily.csv",
@@ -96,7 +96,7 @@ _SYNTH_VOL = {
 
 
 # --------------------------------------------------------------------------- #
-# Demo marker — surfaced in the UI as a soft "some series simulated" pill.
+# Demo marker - surfaced in the UI as a soft "some series simulated" pill.
 # --------------------------------------------------------------------------- #
 def is_demo_prices() -> bool:
     return DEMO_MARKER.exists()
@@ -130,7 +130,7 @@ def _clear_demo() -> None:
 
 
 # --------------------------------------------------------------------------- #
-# Source #1 — FRED (preferred)
+# Source #1 - FRED (preferred)
 # --------------------------------------------------------------------------- #
 FRED_OBS_URL = "https://api.stlouisfed.org/fred/series/observations"
 
@@ -170,7 +170,7 @@ def _fred_series(series_id: str, limit: int = 730) -> pd.Series:
 
 
 # --------------------------------------------------------------------------- #
-# Source #2 — Datahub.io curated CSV mirrors
+# Source #2 - Datahub.io curated CSV mirrors
 # --------------------------------------------------------------------------- #
 def _datahub_series(url: str) -> pd.Series:
     session = get_session(expire_after=config.CACHE_TTL["fred"])
@@ -189,7 +189,7 @@ def _datahub_series(url: str) -> pd.Series:
 
 
 # --------------------------------------------------------------------------- #
-# Source #3 — synthetic deterministic fallback
+# Source #3 - synthetic deterministic fallback
 # --------------------------------------------------------------------------- #
 def _synthesize(name: str, days: int = 180, seed: int = 7) -> pd.Series:
     """Deterministic random-walk series anchored at a plausible recent level."""
@@ -234,14 +234,14 @@ def fetch_prices(period: str = "180d") -> pd.DataFrame:
     synthetic: list[str] = []
 
     for name in config.COMMODITIES.keys():
-        # Tier 1 — FRED
+        # Tier 1 - FRED
         fred_id = _FRED_IDS.get(name)
         s = _fred_series(fred_id) if fred_id else pd.Series(dtype=float)
         if not s.empty:
             out[name] = s
             continue
 
-        # Tier 2 — Datahub mirrors (oil/gas/gold)
+        # Tier 2 - Datahub mirrors (oil/gas/gold)
         url = _DATAHUB_CSVS.get(name)
         if url:
             s = _datahub_series(url)
@@ -249,7 +249,7 @@ def fetch_prices(period: str = "180d") -> pd.DataFrame:
                 out[name] = s.tail(730)
                 continue
 
-        # Tier 3 — synthetic
+        # Tier 3 - synthetic
         out[name] = _synthesize(name)
         synthetic.append(name)
 

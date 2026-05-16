@@ -1,6 +1,6 @@
 """Smoke tests: pipelines must import and the Signal contract must hold.
 
-These don't hit external APIs — they verify the wiring. Run real fetchers
+These don't hit external APIs - they verify the wiring. Run real fetchers
 with `python scripts/refresh_data.py`.
 """
 

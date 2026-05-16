@@ -37,7 +37,7 @@ def run_one(modname: str) -> tuple[str, int | None, str | None, float]:
 
 def main() -> None:
     print("=" * 78)
-    print("API connectivity check — exercising each pipeline.fetch()")
+    print("API connectivity check - exercising each pipeline.fetch()")
     print("=" * 78)
     print(f"AISSTREAM_API_KEY:   {'SET' if config.AISSTREAM_API_KEY else 'EMPTY'}")
     print(f"FRED_API_KEY:        {'SET' if config.FRED_API_KEY else 'EMPTY'}")

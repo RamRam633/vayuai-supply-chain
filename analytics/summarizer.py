@@ -2,10 +2,10 @@
 Executive summary generation.
 
 Two modes:
-  1. Local rule-based summary (always on) — composes a deterministic narrative
+  1. Local rule-based summary (always on) - composes a deterministic narrative
      from the top regional risks and most-severe recent signals.
   2. Claude API summary (off by default; ENABLE_CLAUDE_SUMMARY=true to enable)
-     — takes the same structured brief and asks Claude for a sharper exec-style
+     - takes the same structured brief and asks Claude for a sharper exec-style
      narrative, cached for CACHE_TTL['claude_summary'] seconds.
 
 The Claude prompt is intentionally constrained to reduce hallucination: it
@@ -76,7 +76,7 @@ def _placeholder_regions(sig: dict) -> list[str]:
 
 
 def local_summary(brief: dict[str, Any]) -> str:
-    """Deterministic narrative — fallback when Claude is disabled."""
+    """Deterministic narrative - fallback when Claude is disabled."""
     lines = []
     top = brief.get("top_regions", [])
     if not top:
@@ -118,10 +118,10 @@ CLAUDE_SYSTEM = """You are an expert global supply-chain analyst writing for C-s
 You will receive a structured JSON brief of current risk signals. Produce a tight
 executive summary in markdown with this exact structure:
 
-1. **Headline (one sentence)** — where pressure is building and why it matters now.
-2. **Top three regional pressures** — each as a bullet citing 1-2 specific signals from the brief.
-3. **Commodity/macro watch** — 2-3 sentences on the most consequential price/macro moves.
-4. **What to watch in the next 24-48h** — one bullet per item, max 3 items.
+1. **Headline (one sentence)** - where pressure is building and why it matters now.
+2. **Top three regional pressures** - each as a bullet citing 1-2 specific signals from the brief.
+3. **Commodity/macro watch** - 2-3 sentences on the most consequential price/macro moves.
+4. **What to watch in the next 24-48h** - one bullet per item, max 3 items.
 
 Rules:
 - Use only facts present in the brief; never invent events or numbers.

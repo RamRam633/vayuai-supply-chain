@@ -110,6 +110,8 @@ def render_api_status() -> None:
     if generated_at:
         try:
             ts = datetime.fromisoformat(generated_at.replace("Z", "+00:00"))
+            if ts.tzinfo is None:
+                ts = ts.replace(tzinfo=timezone.utc)
             age_label = _humanize_seconds((datetime.now(timezone.utc) - ts).total_seconds())
         except Exception:
             age_label = _humanize_seconds(age_s)

@@ -99,6 +99,10 @@ def compute_regional_risk(
     for s in signals:
         try:
             ts = datetime.fromisoformat(s["timestamp_utc"].replace("Z", "+00:00"))
+            # Some upstream feeds (notably GDACS) emit tz-naive ISO strings.
+            # Treat them as UTC so the comparison below never crashes.
+            if ts.tzinfo is None:
+                ts = ts.replace(tzinfo=timezone.utc)
         except Exception:
             continue
         if ts >= cutoff:

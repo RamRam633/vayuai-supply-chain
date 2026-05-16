@@ -13,14 +13,20 @@ from components import (
     render_filters_sidebar, apply_filters, filter_summary_caption,
     inject_global_css, apply_light,
     render_api_status, render_cold_start_banner_if_needed,
+    render_brand_header, render_brand_footer, LOGO_PATH,
     TEXT, TEXT_MUTED, BORDER,
 )
 from pipelines import bootstrap
 
 
-st.set_page_config(page_title="Events - Pulse", layout="wide")
+st.set_page_config(
+    page_title="Events - Supply Chain Pulse",
+    page_icon=str(LOGO_PATH) if LOGO_PATH.exists() else None,
+    layout="wide",
+)
 inject_global_css()
 bootstrap.ensure_bootstrap()
+render_brand_header()
 st.markdown("## Global event feed")
 
 blob = load_signals()
@@ -42,6 +48,7 @@ if not signals:
             "in the sidebar."
         )
     render_api_status()
+render_brand_footer()
     st.stop()
 
 df = pd.DataFrame(signals)
@@ -117,3 +124,4 @@ st.dataframe(
 # API health footer
 # --------------------------------------------------------------------------- #
 render_api_status()
+render_brand_footer()

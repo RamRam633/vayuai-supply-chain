@@ -30,6 +30,7 @@ from components import (
     render_filters_sidebar, apply_filters, filter_summary_caption,
     inject_global_css, apply_light,
     render_api_status, render_cold_start_banner_if_needed,
+    render_brand_header, render_brand_footer, LOGO_PATH,
     TEXT, TEXT_MUTED, BORDER, BG, BG_MUTED, ACCENT, ACCENT_DEEP, CRITICAL,
 )
 from pipelines import bootstrap
@@ -38,9 +39,14 @@ from pipelines.global_trends import (
 )
 
 
-st.set_page_config(page_title="Trends & News - Pulse", layout="wide")
+st.set_page_config(
+    page_title="Trends & News - Supply Chain Pulse",
+    page_icon=str(LOGO_PATH) if LOGO_PATH.exists() else None,
+    layout="wide",
+)
 inject_global_css()
 bootstrap.ensure_bootstrap()
+render_brand_header()
 
 st.markdown("## Trends & News")
 st.markdown(
@@ -476,3 +482,4 @@ with feed_tabs[1]:
 # API health footer
 # --------------------------------------------------------------------------- #
 render_api_status()
+render_brand_footer()

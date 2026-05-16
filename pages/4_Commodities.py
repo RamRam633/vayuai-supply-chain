@@ -18,14 +18,20 @@ from components import (
     render_filters_sidebar, apply_filters,
     inject_global_css, apply_light,
     render_api_status, render_cold_start_banner_if_needed,
+    render_brand_header, render_brand_footer, LOGO_PATH,
     TEXT_MUTED, ACCENT,
 )
 from pipelines import bootstrap
 
 
-st.set_page_config(page_title="Commodities - Pulse", layout="wide")
+st.set_page_config(
+    page_title="Commodities - Supply Chain Pulse",
+    page_icon=str(LOGO_PATH) if LOGO_PATH.exists() else None,
+    layout="wide",
+)
 inject_global_css()
 bootstrap.ensure_bootstrap()
+render_brand_header()
 st.markdown("## Commodity & macro detail")
 
 flt = render_filters_sidebar()
@@ -287,3 +293,4 @@ else:
 # API health footer
 # --------------------------------------------------------------------------- #
 render_api_status()
+render_brand_footer()

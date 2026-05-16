@@ -21,14 +21,20 @@ from components import (
     render_filters_sidebar, apply_filters, filter_summary_caption,
     inject_global_css, apply_light, map_kwargs,
     render_api_status, render_cold_start_banner_if_needed,
+    render_brand_header, render_brand_footer, LOGO_PATH,
     TEXT, TEXT_MUTED, BORDER, ACCENT,
 )
 from pipelines import bootstrap
 
 
-st.set_page_config(page_title="Flights - Pulse", layout="wide")
+st.set_page_config(
+    page_title="Flights - Supply Chain Pulse",
+    page_icon=str(LOGO_PATH) if LOGO_PATH.exists() else None,
+    layout="wide",
+)
 inject_global_css()
 bootstrap.ensure_bootstrap()
+render_brand_header()
 st.markdown("## Live air traffic")
 
 flt = render_filters_sidebar()
@@ -55,6 +61,7 @@ if not flights:
         "**Refresh data now** in the sidebar to force a fetch."
     )
     render_api_status()
+render_brand_footer()
     st.stop()
 
 
@@ -197,3 +204,4 @@ else:
 # API health footer
 # --------------------------------------------------------------------------- #
 render_api_status()
+render_brand_footer()

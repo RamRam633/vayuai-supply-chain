@@ -36,14 +36,20 @@ from pipelines.flights import (
 from components import (
     render_filters_sidebar, inject_global_css, apply_light, map_kwargs,
     render_api_status, render_cold_start_banner_if_needed,
+    render_brand_header, render_brand_footer, LOGO_PATH,
     TEXT, TEXT_MUTED, BORDER, BG, BG_MUTED, ACCENT, ACCENT_DEEP, CRITICAL,
 )
 from pipelines import bootstrap
 
 
-st.set_page_config(page_title="Logistics - Pulse", layout="wide")
+st.set_page_config(
+    page_title="Logistics - Supply Chain Pulse",
+    page_icon=str(LOGO_PATH) if LOGO_PATH.exists() else None,
+    layout="wide",
+)
 inject_global_css()
 bootstrap.ensure_bootstrap()
+render_brand_header()
 
 st.markdown("## Cargo airline operations")
 st.markdown(
@@ -104,6 +110,7 @@ if not flights:
         "Free registration at https://opensky-network.org/."
     )
     render_api_status()
+render_brand_footer()
     st.stop()
 
 
@@ -352,3 +359,4 @@ with st.expander("Full cargo aircraft roster"):
 # API health footer
 # --------------------------------------------------------------------------- #
 render_api_status()
+render_brand_footer()

@@ -37,6 +37,9 @@ from components import (
     render_top_movers,
     render_api_status,
     render_cold_start_banner_if_needed,
+    render_brand_header,
+    render_brand_footer,
+    LOGO_PATH,
     inject_global_css,
     TEXT, TEXT_MUTED, ACCENT, BORDER,
 )
@@ -46,8 +49,8 @@ from pipelines.ports_vessels import read_snapshot as read_vessels, is_demo_snaps
 
 
 st.set_page_config(
-    page_title="Supply Chain Pulse",
-    page_icon="globe",
+    page_title="Supply Chain Pulse - VayuAI",
+    page_icon=str(LOGO_PATH) if LOGO_PATH.exists() else None,
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -59,16 +62,11 @@ bootstrap.ensure_bootstrap()
 
 
 # --------------------------------------------------------------------------- #
-# Sidebar - snapshot info, refresh, filters
+# Sidebar - VayuAI brand, snapshot info, refresh, filters
 # --------------------------------------------------------------------------- #
+render_brand_header()
 with st.sidebar:
-    st.markdown(
-        "<div style='display:flex;align-items:center;gap:8px;margin-bottom:4px'>"
-        f"<span style='width:8px;height:8px;border-radius:50%;background:{ACCENT}'></span>"
-        f"<span style='font-weight:600;color:{TEXT};font-size:1.0rem'>Supply Chain Pulse</span></div>",
-        unsafe_allow_html=True,
-    )
-    st.caption("External intelligence · free-tier data")
+    st.caption("External intelligence on free-tier data feeds")
 
     blob = load_signals()
     generated_at = blob.get("generated_at")
@@ -287,9 +285,12 @@ with right:
 render_api_status()
 
 st.caption(
-    "Open **Flights**, **Ships**, **Events**, **Commodities**, "
-    "**Regional Detail**, **Port Detail**, **Chokepoints** in the sidebar for "
-    "granular drilldowns. Public data - GDELT, GDACS, USGS, NOAA, Open-Meteo, "
-    "NHC, NASA EONET, OpenSky, AISStream, FRED, Datahub, Google News, Reddit. "
+    "Open **Flights**, **Logistics**, **Ships**, **Events**, **Commodities**, "
+    "**Regional Detail**, **Port Detail**, **Chokepoints**, **Trends & News** "
+    "in the sidebar for granular drilldowns. Public data: GDELT, GDACS, USGS, "
+    "NOAA, Open-Meteo, NHC, NASA EONET, OpenSky, ADSB.lol, AISStream, FRED, "
+    "Datahub, Google Trends, Wikipedia, Google News, Reddit. "
     "Situational-awareness tool, not operational or investment advice."
 )
+
+render_brand_footer()

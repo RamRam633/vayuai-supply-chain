@@ -1,19 +1,19 @@
 # Render blueprint for Global Supply Chain Pulse.
 # Push to GitHub, then in Render: "New" -> "Blueprint" -> point to this repo.
 #
-# Two services:
-#   1. The Streamlit web app
-#   2. A scheduled cron that refreshes the data snapshot every 15 min
-#
-# A persistent disk holds the cache + signals.json so the web service and
-# cron share state.
+# Free tier on Render:
+#   - no persistent disks
+#   - no cron jobs (they can't share state with the web service)
+# So we run a single web service. The app refreshes data on-demand via the
+# "Refresh data now" button (or automatically on first request if no snapshot
+# exists). Upgrade to a paid plan later to bring back the 15-min cron + disk.
 
 services:
   - type: web
     name: supply-chain-pulse
     env: docker
     dockerfilePath: ./deploy/Dockerfile
-    plan: free                # upgrade to starter ($7/mo) to avoid sleep
+    plan: free                # upgrade to starter ($7/mo) to avoid sleep + enable disk
     healthCheckPath: /_stcore/health
     autoDeploy: true
     envVars:
@@ -28,32 +28,6 @@ services:
       - key: ENABLE_CLAUDE_SUMMARY
         value: "false"
       - key: CACHE_DB_PATH
-        value: /var/data/cache.sqlite
+        value: /tmp/cache.sqlite
       - key: REFRESH_INTERVAL_MINUTES
         value: "15"
-    disk:
-      name: pulse-data
-      mountPath: /var/data
-      sizeGB: 1
-
-  - type: cron
-    name: pulse-refresh
-    env: docker
-    dockerfilePath: ./deploy/Dockerfile
-    schedule: "*/15 * * * *"
-    dockerCommand: python scripts/refresh_data.py
-    envVars:
-      - fromService:
-          type: web
-          name: supply-chain-pulse
-          envVarKey: AISSTREAM_API_KEY
-      - fromService:
-          type: web
-          name: supply-chain-pulse
-          envVarKey: FRED_API_KEY
-      - key: CACHE_DB_PATH
-        value: /var/data/cache.sqlite
-    disk:
-      name: pulse-data
-      mountPath: /var/data
-      sizeGB: 1

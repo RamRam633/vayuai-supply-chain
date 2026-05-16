@@ -31,6 +31,10 @@ def append_scores(regional: dict[str, dict]) -> None:
     if HISTORY_PATH.exists():
         try:
             existing = pd.read_parquet(HISTORY_PATH)
+            # Coerce timestamps to plain ISO strings on both sides so concat
+            # never mixes tz-aware and tz-naive dtypes.
+            existing["timestamp_utc"] = existing["timestamp_utc"].astype(str)
+            new["timestamp_utc"]      = new["timestamp_utc"].astype(str)
             df = pd.concat([existing, new], ignore_index=True)
         except Exception:
             df = new

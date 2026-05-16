@@ -10,6 +10,7 @@ The dashboard is multipage:
     pages/5_Regional_Detail.py    — drill into one region
     pages/6_Port_Detail.py        — drill into one port
     pages/7_Chokepoints.py        — chokepoint health & exposure
+    pages/8_Trends_News.py        — news volume + market trends
 """
 
 from __future__ import annotations
@@ -34,9 +35,12 @@ from components import (
     render_briefing,
     render_pressure_heatmap,
     render_top_movers,
+    render_api_status,
+    render_cold_start_banner_if_needed,
     inject_global_css,
     TEXT, TEXT_MUTED, ACCENT, BORDER,
 )
+from pipelines import bootstrap
 from pipelines.flights import read_snapshot as read_flights
 from pipelines.ports_vessels import read_snapshot as read_vessels, is_demo_snapshot
 
@@ -48,6 +52,10 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 inject_global_css()
+
+# Kick the cold-start bootstrap on the very first render of this process.
+# Idempotent — subsequent reruns are no-ops.
+bootstrap.ensure_bootstrap()
 
 
 # --------------------------------------------------------------------------- #
@@ -66,6 +74,8 @@ with st.sidebar:
     generated_at = blob.get("generated_at")
     if generated_at:
         st.caption(f"Snapshot: {generated_at[:19].replace('T', ' ')} UTC")
+    elif bootstrap.is_refreshing():
+        st.caption("Snapshot: building (first run after cold start)…")
     else:
         st.warning("No snapshot yet. Click below to fetch.")
 
@@ -91,8 +101,8 @@ with st.sidebar:
         "<div style='font-size:0.72rem;color:#6B7280;text-transform:uppercase;"
         "letter-spacing:0.06em;margin-bottom:4px'>Data sources</div>"
         "<div style='font-size:0.78rem;line-height:1.4'>"
-        "GDELT 2.0 · USGS · NOAA NWS · Open-Meteo · NHC · NASA EONET · "
-        "OpenSky Network · AISStream · yfinance · Stooq · FRED</div>",
+        "GDELT 2.0 · GDACS · USGS · NOAA NWS · Open-Meteo · NHC · NASA EONET · "
+        "OpenSky Network · AISStream · FRED · Datahub · Google News · Reddit</div>",
         unsafe_allow_html=True,
     )
     st.divider()
@@ -147,6 +157,9 @@ st.markdown(
 )
 filter_summary_caption(flt, len(all_signals), len(signals))
 
+# Cold-start banner — only renders when there's no snapshot yet.
+cold_start = render_cold_start_banner_if_needed()
+
 st.markdown("&nbsp;", unsafe_allow_html=True)
 
 
@@ -175,9 +188,9 @@ row2 = st.columns(4)
 row2[0].metric("Aircraft tracked", f"{len(airborne_now):,}",
                help="Airborne aircraft in the latest OpenSky snapshot.")
 row2[1].metric("Vessels tracked", f"{len(vessels_now):,}",
-               help="DEMO synthetic snapshot — set AISSTREAM_API_KEY for live."
-               if is_demo_snapshot()
-               else "Live AISStream snapshot.")
+               help="Live AISStream snapshot via the in-process listener."
+               if not is_demo_snapshot()
+               else "Synthetic vessel snapshot (no AISSTREAM_API_KEY set, or first AIS cycle still running).")
 row2[2].metric("Tropical + volcanic", f"{n_tropical + n_volcanic}")
 row2[3].metric("Markets shocks", n_market,
                help="Commodity z-score ≥ 2σ or FRED macro shock.")
@@ -192,14 +205,6 @@ with st.expander("Map overlays", expanded=False):
                                 help="Overlay airborne aircraft (large dataset).")
     show_vessels  = c2.checkbox("Show vessels",       value=True)
     show_airports = c3.checkbox("Show airports",      value=True)
-
-if is_demo_snapshot() and show_vessels:
-    st.info(
-        "Vessel snapshot shown is **demo / synthetic** (deterministically generated "
-        "around real ports, chokepoints, and shipping lanes). Set "
-        "`AISSTREAM_API_KEY` in `.env` and run `python scripts/refresh_ais.py` "
-        "to swap in live AIS positions."
-    )
 
 render_world_map(
     signals,
@@ -277,13 +282,14 @@ with right:
 
 
 # --------------------------------------------------------------------------- #
-# Footer
+# Footer — unified API health strip + disclosure
 # --------------------------------------------------------------------------- #
-st.divider()
+render_api_status()
+
 st.caption(
     "Open **Flights**, **Ships**, **Events**, **Commodities**, "
     "**Regional Detail**, **Port Detail**, **Chokepoints** in the sidebar for "
-    "granular drilldowns. Public data — GDELT, USGS, NOAA, Open-Meteo, NHC, "
-    "NASA EONET, OpenSky, AISStream, yfinance, Stooq, FRED. "
+    "granular drilldowns. Public data — GDELT, GDACS, USGS, NOAA, Open-Meteo, "
+    "NHC, NASA EONET, OpenSky, AISStream, FRED, Datahub, Google News, Reddit. "
     "Situational-awareness tool, not operational or investment advice."
 )

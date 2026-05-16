@@ -19,13 +19,17 @@ from analytics.risk_score import load_signals
 from components import (
     render_filters_sidebar, apply_filters,
     inject_global_css, apply_light, map_kwargs,
+    render_api_status, render_cold_start_banner_if_needed,
     ACCENT, TEXT_MUTED,
 )
+from pipelines import bootstrap
 
 
 st.set_page_config(page_title="Port — Pulse", layout="wide")
 inject_global_css()
+bootstrap.ensure_bootstrap()
 st.markdown("## Port drill-down")
+render_cold_start_banner_if_needed()
 
 flt = render_filters_sidebar()
 port_names = [p["name"] for p in config.MAJOR_PORTS]
@@ -167,3 +171,9 @@ if wx:
     w2.metric("Wind (km/h)",  f"{wx.get('wind_speed_10m', 0):.0f}")
     w3.metric("Gusts (km/h)", f"{wx.get('wind_gusts_10m', 0):.0f}")
     w4.metric("Precip (mm)",  f"{wx.get('precipitation', 0):.1f}")
+
+
+# --------------------------------------------------------------------------- #
+# API health footer
+# --------------------------------------------------------------------------- #
+render_api_status()

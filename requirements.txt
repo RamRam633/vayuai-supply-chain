@@ -18,7 +18,6 @@ plotly==5.22.0
 altair==5.3.0
 
 # Data sources
-yfinance==0.2.40
 feedparser==6.0.11
 
 # Async + websockets (AISStream)

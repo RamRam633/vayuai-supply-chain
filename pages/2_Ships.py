@@ -22,30 +22,23 @@ from analytics.risk_score import load_signals
 from components import (
     render_filters_sidebar, apply_filters,
     inject_global_css, apply_light, map_kwargs,
+    render_api_status, render_cold_start_banner_if_needed,
     TEXT_MUTED, BORDER, ACCENT, WARNING,
 )
+from pipelines import bootstrap
 
 
 st.set_page_config(page_title="Ships — Pulse", layout="wide")
 inject_global_css()
+bootstrap.ensure_bootstrap()
 st.markdown("## Live vessel traffic")
 
 flt = render_filters_sidebar()
+render_cold_start_banner_if_needed()
 
 vessels    = read_vessels()
 congestion = port_congestion()
 chokes     = chokepoint_traffic()
-
-# Demo data banner
-if is_demo_snapshot():
-    st.info(
-        "**Demo vessel snapshot in use.** Deterministically generated around "
-        "real ports, chokepoints, and the busiest lanes — useful for "
-        "demonstrating the UI shape and the congestion math. Set "
-        "`AISSTREAM_API_KEY` in `.env` and run "
-        "`python scripts/refresh_ais.py` (60s WebSocket listen) to swap in "
-        "live AISStream positions."
-    )
 
 
 # --------------------------------------------------------------------------- #
@@ -170,3 +163,9 @@ else:
             ),
         },
     )
+
+
+# --------------------------------------------------------------------------- #
+# API health footer
+# --------------------------------------------------------------------------- #
+render_api_status()

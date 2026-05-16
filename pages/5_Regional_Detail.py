@@ -17,13 +17,17 @@ from pipelines.base import regions_for_point
 from components import (
     render_filters_sidebar, apply_filters,
     inject_global_css, apply_light,
+    render_api_status, render_cold_start_banner_if_needed,
     TEXT, TEXT_MUTED, ACCENT, CRITICAL, WARNING,
 )
+from pipelines import bootstrap
 
 
 st.set_page_config(page_title="Region — Pulse", layout="wide")
 inject_global_css()
+bootstrap.ensure_bootstrap()
 st.markdown("## Regional drill-down")
+render_cold_start_banner_if_needed()
 
 flt = render_filters_sidebar()
 region = st.selectbox("Region", options=list(config.REGIONS.keys()))
@@ -139,3 +143,9 @@ else:
             "url": st.column_config.LinkColumn("url"),
         },
     )
+
+
+# --------------------------------------------------------------------------- #
+# API health footer
+# --------------------------------------------------------------------------- #
+render_api_status()

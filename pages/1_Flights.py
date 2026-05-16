@@ -20,15 +20,19 @@ from analytics.risk_score import load_signals
 from components import (
     render_filters_sidebar, apply_filters, filter_summary_caption,
     inject_global_css, apply_light, map_kwargs,
+    render_api_status, render_cold_start_banner_if_needed,
     TEXT, TEXT_MUTED, BORDER, ACCENT,
 )
+from pipelines import bootstrap
 
 
 st.set_page_config(page_title="Flights — Pulse", layout="wide")
 inject_global_css()
+bootstrap.ensure_bootstrap()
 st.markdown("## Live air traffic")
 
 flt = render_filters_sidebar()
+render_cold_start_banner_if_needed()
 
 flights  = read_flights()
 airborne = [f for f in flights if not f.get("on_ground")]
@@ -46,9 +50,11 @@ k4.metric("Snapshot", snap_ts[11:19] + " UTC" if snap_ts else "—")
 
 if not flights:
     st.info(
-        "No flight snapshot yet. Click **Refresh data now** in the sidebar — "
-        "OpenSky needs no API key and re-runs in seconds."
+        "No flight snapshot yet. The background refresh fetches a global "
+        "OpenSky snapshot every few minutes — try again shortly, or click "
+        "**Refresh data now** in the sidebar to force a fetch."
     )
+    render_api_status()
     st.stop()
 
 
@@ -185,3 +191,9 @@ else:
             "url": st.column_config.LinkColumn("url"),
         },
     )
+
+
+# --------------------------------------------------------------------------- #
+# API health footer
+# --------------------------------------------------------------------------- #
+render_api_status()

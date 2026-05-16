@@ -12,12 +12,15 @@ from analytics.risk_score import load_signals
 from components import (
     render_filters_sidebar, apply_filters, filter_summary_caption,
     inject_global_css, apply_light,
+    render_api_status, render_cold_start_banner_if_needed,
     TEXT, TEXT_MUTED, BORDER,
 )
+from pipelines import bootstrap
 
 
 st.set_page_config(page_title="Events — Pulse", layout="wide")
 inject_global_css()
+bootstrap.ensure_bootstrap()
 st.markdown("## Global event feed")
 
 blob = load_signals()
@@ -28,8 +31,17 @@ flt = render_filters_sidebar(country_options=country_options)
 signals = apply_filters(all_signals, flt)
 filter_summary_caption(flt, len(all_signals), len(signals))
 
+# Cold-start banner — explains the empty state on first load.
+cold = render_cold_start_banner_if_needed()
+
 if not signals:
-    st.info("No signals match the current filters.")
+    if not cold:
+        st.info(
+            "No signals match the current filters. Try widening the time "
+            "window, clearing categories, or hitting **Refresh data now** "
+            "in the sidebar."
+        )
+    render_api_status()
     st.stop()
 
 df = pd.DataFrame(signals)
@@ -99,3 +111,9 @@ st.dataframe(
         "url": st.column_config.LinkColumn("url"),
     },
 )
+
+
+# --------------------------------------------------------------------------- #
+# API health footer
+# --------------------------------------------------------------------------- #
+render_api_status()

@@ -34,7 +34,7 @@ ALL_SOURCES = [
     "usgs", "noaa", "open-meteo",
     "nhc", "eonet",
     "opensky", "ais-snapshot",
-    "yfinance", "commodities", "fred",
+    "commodities", "macro", "fred",
     "google-news", "reddit",
 ]
 

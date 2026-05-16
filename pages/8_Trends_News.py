@@ -22,17 +22,21 @@ from analytics.risk_score import load_signals
 from components import (
     render_filters_sidebar, apply_filters, filter_summary_caption,
     inject_global_css, apply_light,
+    render_api_status, render_cold_start_banner_if_needed,
     TEXT, TEXT_MUTED, BORDER, BG, BG_MUTED, ACCENT, ACCENT_DEEP, CRITICAL,
 )
+from pipelines import bootstrap
 
 
 st.set_page_config(page_title="Trends & News — Pulse", layout="wide")
 inject_global_css()
+bootstrap.ensure_bootstrap()
 st.markdown("## Trends & News")
 st.caption(
     "Public-discourse view: live headlines, theme volume, and the words "
     "moving through every monitored channel right now."
 )
+render_cold_start_banner_if_needed()
 
 
 # --------------------------------------------------------------------------- #
@@ -269,3 +273,9 @@ with feed_tabs[1]:
                          reverse=True)[:50]
         for s in ordered:
             _render_news_card(s)
+
+
+# --------------------------------------------------------------------------- #
+# API health footer
+# --------------------------------------------------------------------------- #
+render_api_status()

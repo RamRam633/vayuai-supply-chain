@@ -24,12 +24,15 @@ from analytics.risk_score import load_signals
 from components import (
     render_filters_sidebar, apply_filters,
     inject_global_css, apply_light, map_kwargs,
+    render_api_status, render_cold_start_banner_if_needed,
     TEXT, TEXT_MUTED, ACCENT, CRITICAL, WARNING, INFO, BORDER,
 )
+from pipelines import bootstrap
 
 
 st.set_page_config(page_title="Chokepoints — Pulse", layout="wide")
 inject_global_css()
+bootstrap.ensure_bootstrap()
 st.markdown("## Strategic chokepoint health")
 st.caption(
     "Eight global chokepoints account for the majority of seaborne trade. "
@@ -39,6 +42,7 @@ st.caption(
 
 
 flt = render_filters_sidebar()
+render_cold_start_banner_if_needed()
 
 
 # --------------------------------------------------------------------------- #
@@ -221,3 +225,9 @@ for _, row in ck_df.iterrows():
                     "url": st.column_config.LinkColumn("url"),
                 },
             )
+
+
+# --------------------------------------------------------------------------- #
+# API health footer
+# --------------------------------------------------------------------------- #
+render_api_status()

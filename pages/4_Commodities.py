@@ -17,25 +17,19 @@ from analytics.risk_score import load_signals
 from components import (
     render_filters_sidebar, apply_filters,
     inject_global_css, apply_light,
+    render_api_status, render_cold_start_banner_if_needed,
     TEXT_MUTED, ACCENT,
 )
+from pipelines import bootstrap
 
 
 st.set_page_config(page_title="Commodities — Pulse", layout="wide")
 inject_global_css()
+bootstrap.ensure_bootstrap()
 st.markdown("## Commodity & macro detail")
 
 flt = render_filters_sidebar()
-
-if is_demo_prices():
-    st.info(
-        "Some commodity series are **demo / synthetic** because yfinance and "
-        "Stooq are both rate-limiting this host. WTI, Brent, Natural Gas and "
-        "Gold are pulled live from Datahub.io. The others are deterministic "
-        "random walks anchored at plausible recent levels — useful for "
-        "demonstrating the chart shape. Add a `FRED_API_KEY` (free) for live "
-        "macro/freight series in the section below."
-    )
+render_cold_start_banner_if_needed()
 
 
 # --------------------------------------------------------------------------- #
@@ -44,9 +38,9 @@ if is_demo_prices():
 df = fetch_prices()
 if df.empty:
     st.warning(
-        "No commodity price history available. yfinance is intermittently "
-        "blocked by Yahoo; the Stooq fallback also failed. Try **Refresh data "
-        "now** on the Overview page in a few minutes."
+        "No commodity price history available — the FRED and Datahub fetches "
+        "both failed on the last refresh. Try **Refresh data now** in the "
+        "sidebar; details are in the API health strip at the bottom of the page."
     )
 else:
     st.markdown("### Commodity prices")
@@ -242,30 +236,28 @@ else:
 # --------------------------------------------------------------------------- #
 # FRED macro series
 # --------------------------------------------------------------------------- #
-st.markdown("### Macro & freight series (FRED)")
-if not config.FRED_API_KEY:
-    st.warning(
-        "Set `FRED_API_KEY` in `.env` to enable FRED series. "
-        "Free at https://fredaccount.stlouisfed.org/apikeys"
+st.markdown("### Macro & freight series")
+series = fetch_all_series()
+if not series:
+    st.info(
+        "No macro series available right now. Without a `FRED_API_KEY` the "
+        "page falls back to Datahub.io daily mirrors plus a Frankfurter FX "
+        "basket — both failed on the last refresh."
     )
 else:
-    series = fetch_all_series()
-    if not series:
-        st.info("No macro series returned.")
-    else:
-        for name, s in series.items():
-            tail = s.tail(365)
-            fig = go.Figure(
-                go.Scatter(x=tail.index, y=tail.values, mode="lines",
-                           line=dict(color=ACCENT, width=1.8))
-            )
-            apply_light(
-                fig, height=220,
-                margin=dict(l=10, r=10, t=40, b=10),
-                title=dict(text=name, font=dict(size=13)),
-                showlegend=False,
-            )
-            st.plotly_chart(fig, use_container_width=True)
+    for name, s in series.items():
+        tail = s.tail(365)
+        fig = go.Figure(
+            go.Scatter(x=tail.index, y=tail.values, mode="lines",
+                       line=dict(color=ACCENT, width=1.8))
+        )
+        apply_light(
+            fig, height=220,
+            margin=dict(l=10, r=10, t=40, b=10),
+            title=dict(text=name, font=dict(size=13)),
+            showlegend=False,
+        )
+        st.plotly_chart(fig, use_container_width=True)
 
 
 # --------------------------------------------------------------------------- #
@@ -289,3 +281,9 @@ else:
             ),
         },
     )
+
+
+# --------------------------------------------------------------------------- #
+# API health footer
+# --------------------------------------------------------------------------- #
+render_api_status()

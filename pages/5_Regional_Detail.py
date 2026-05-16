@@ -49,17 +49,17 @@ with left:
     fig = go.Figure(go.Indicator(
         mode="gauge+number",
         value=meta["score"],
-        number={"suffix": "/100", "font": {"size": 36}},
+        number={"suffix": "/100", "font": {"size": 36, "color": "#f5f1e8"}},
         gauge={
             "axis":  {"range": [0, 100], "tickfont": {"color": TEXT_MUTED}},
-            "bar":   {"color": "#0E0E0E", "thickness": 0.18},
-            "bgcolor": "#FFFFFF",
+            "bar":   {"color": "#d4af37", "thickness": 0.20},
+            "bgcolor": "rgba(0,0,0,0)",
             "borderwidth": 0,
             "steps": [
-                {"range": [0, 20],   "color": "#ECFDF5"},
-                {"range": [20, 45],  "color": "#FEF3C7"},
-                {"range": [45, 70],  "color": "#FED7AA"},
-                {"range": [70, 100], "color": "#FCA5A5"},
+                {"range": [0, 20],   "color": "#1c2a22"},
+                {"range": [20, 45],  "color": "#3a3320"},
+                {"range": [45, 70],  "color": "#4a3320"},
+                {"range": [70, 100], "color": "#4a2020"},
             ],
         },
     ))

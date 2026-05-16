@@ -173,11 +173,11 @@ def render_pressure_heatmap(regional: dict) -> None:
     fig = px.imshow(
         df,
         color_continuous_scale=[
-            [0.0,  "#F7F7F8"],
-            [0.25, "#FEF3C7"],
-            [0.50, "#FED7AA"],
-            [0.75, "#FCA5A5"],
-            [1.00, "#DC2626"],
+            [0.0,  "#1c1a18"],
+            [0.25, "#3a3530"],
+            [0.50, "#d4af37"],
+            [0.75, "#e07a35"],
+            [1.00, "#e85a5a"],
         ],
         aspect="auto",
         origin="upper",

@@ -1,9 +1,16 @@
 """
-Shared light theme — fonts, colors, plotly + pydeck helpers.
+Shared theme — vayuai.ai dark + gold + serif.
 
-Inspired by 2026-era OpenAI surfaces: off-white background, near-black text,
-hairline borders, lots of whitespace, a single restrained accent (#10A37F).
-Every component imports from here so the look stays consistent.
+Aligned with the main vayuai.ai site:
+    background  → deep charcoal #0b0a09
+    text        → warm cream    #f5f1e8
+    accent      → gold          #d4af37
+    headings    → Fraunces (serif, optical)
+    body        → Inter
+    labels/mono → JetBrains Mono
+
+Every component imports from here so the look stays consistent across
+the overview and every drilldown page.
 """
 
 from __future__ import annotations
@@ -15,89 +22,109 @@ import streamlit as st
 # --------------------------------------------------------------------------- #
 # Color tokens
 # --------------------------------------------------------------------------- #
-BG               = "#FFFFFF"
-BG_MUTED         = "#F7F7F8"
-BG_SUBTLE        = "#FAFAFA"
-BORDER           = "#E5E7EB"
-BORDER_STRONG    = "#D1D5DB"
-TEXT             = "#0E0E0E"
-TEXT_MUTED       = "#6B7280"
-TEXT_SUBTLE      = "#9CA3AF"
+BG               = "#0b0a09"   # page background — deep charcoal
+BG_MUTED         = "#131110"   # elevated surface (cards, sidebar)
+BG_SUBTLE        = "#181513"   # hover / striped row tint
+BORDER           = "#2a2520"   # hairline divider
+BORDER_STRONG    = "#3a3530"   # button outline, focus rings
 
-ACCENT           = "#10A37F"   # OpenAI green-ish
-ACCENT_DEEP      = "#0E7A60"
+TEXT             = "#f5f1e8"   # warm cream — primary text
+TEXT_MUTED       = "#b9b2a2"   # secondary text, captions
+TEXT_SUBTLE      = "#807868"   # tertiary text, eyebrow labels
 
-CRITICAL         = "#DC2626"
-WARNING          = "#D97706"
-INFO             = "#2563EB"
-SUCCESS          = "#16A34A"
-PURPLE           = "#7C3AED"
+ACCENT           = "#d4af37"   # gold — primary accent
+ACCENT_DEEP      = "#e7c764"   # soft gold — hover, highlights
 
-# Category color tokens — used by the map and tables.
+CRITICAL         = "#e85a5a"   # vivid red — severity ≥ 0.7 / down dots
+WARNING          = "#e07a35"   # ember — severity ≥ 0.4 / partial dots
+INFO             = "#7b9aba"   # cool blue
+SUCCESS          = "#84a17d"   # muted sage — live dots
+PURPLE           = "#c499e8"
+
+# Category color tokens — brightened for dark-background readability.
 CATEGORY_COLOR = {
-    "geopolitical": "#DC2626",
-    "weather":      "#2563EB",
-    "tropical":     "#DB2777",
-    "seismic":      "#D97706",
-    "volcanic":     "#EA580C",
-    "natural":      "#16A34A",
-    "freight":      "#0891B2",
-    "commodity":    "#7C3AED",
-    "macro":        "#475569",
-    "flight":       "#0E7490",
-    "news":         "#1F2937",
+    "geopolitical": "#e85a5a",
+    "weather":      "#7b9aba",
+    "tropical":     "#e69aba",
+    "seismic":      "#e8a050",
+    "volcanic":     "#f07a4e",
+    "natural":      "#a8c08a",
+    "freight":      "#6cb5c9",
+    "commodity":    "#c499e8",
+    "macro":        "#9aa5b5",
+    "flight":       "#7ecbe0",
+    "news":         "#d4d4cf",
 }
 
 CATEGORY_COLOR_RGBA = {
-    "geopolitical": [220,  38,  38, 200],
-    "weather":      [ 37,  99, 235, 200],
-    "tropical":     [219,  39, 119, 220],
-    "seismic":      [217, 119,   6, 200],
-    "volcanic":     [234,  88,  12, 220],
-    "natural":      [ 22, 163,  74, 200],
-    "freight":      [  8, 145, 178, 200],
-    "commodity":    [124,  58, 237, 200],
-    "macro":        [ 71,  85, 105, 180],
-    "flight":       [ 14, 116, 144, 200],
-    "news":         [ 31,  41,  55, 180],
+    "geopolitical": [232,  90,  90, 220],
+    "weather":      [123, 154, 186, 220],
+    "tropical":     [230, 154, 186, 220],
+    "seismic":      [232, 160,  80, 220],
+    "volcanic":     [240, 122,  78, 220],
+    "natural":      [168, 192, 138, 220],
+    "freight":      [108, 181, 201, 220],
+    "commodity":    [196, 153, 232, 220],
+    "macro":        [154, 165, 181, 200],
+    "flight":       [126, 203, 224, 220],
+    "news":         [212, 212, 207, 200],
 }
 
-# Discrete plot palette — order tuned for 5-8 series.
+# Discrete plot palette — tuned for 5-10 series on dark bg, gold-led.
 PALETTE = [
-    "#0E0E0E", "#10A37F", "#2563EB", "#D97706", "#DC2626",
-    "#7C3AED", "#0891B2", "#65A30D", "#DB2777", "#6B7280",
+    "#d4af37",   # gold
+    "#e7c764",   # soft gold
+    "#7b9aba",   # cool blue
+    "#e07a35",   # ember
+    "#a8c08a",   # sage
+    "#c499e8",   # purple
+    "#e85a5a",   # red
+    "#6cb5c9",   # cyan
+    "#e69aba",   # pink
+    "#b9b2a2",   # warm gray
 ]
 
 
 # --------------------------------------------------------------------------- #
-# Plotly helper
+# Plotly helper — dark template + cream text + gold leading color
 # --------------------------------------------------------------------------- #
 def apply_light(fig: go.Figure, **overrides) -> go.Figure:
-    """Apply the light theme to a Plotly Figure in place. Returns the figure."""
+    """Apply the vayuai dark theme to a Plotly Figure in place. Returns the fig.
+
+    Name kept as `apply_light` for backwards compatibility with every
+    page; the body is now the dark/gold theme.
+    """
     layout = dict(
-        template="plotly_white",
+        template="plotly_dark",
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         font=dict(
             color=TEXT,
-            family="ui-sans-serif, -apple-system, system-ui, sans-serif",
+            family="Inter, ui-sans-serif, -apple-system, system-ui, sans-serif",
             size=12,
         ),
         colorway=PALETTE,
         margin=dict(l=10, r=10, t=10, b=10),
         hoverlabel=dict(
-            bgcolor="#FFFFFF",
+            bgcolor=BG_MUTED,
             font_size=12,
-            font_family="ui-sans-serif, -apple-system, system-ui, sans-serif",
+            font_color=TEXT,
+            font_family="Inter, ui-sans-serif, system-ui, sans-serif",
             bordercolor=BORDER,
         ),
         xaxis=dict(
             gridcolor=BORDER, zerolinecolor=BORDER,
             tickfont=dict(color=TEXT_MUTED),
+            linecolor=BORDER,
         ),
         yaxis=dict(
             gridcolor=BORDER, zerolinecolor=BORDER,
             tickfont=dict(color=TEXT_MUTED),
+            linecolor=BORDER,
+        ),
+        legend=dict(
+            bgcolor="rgba(0,0,0,0)",
+            font=dict(color=TEXT_MUTED),
         ),
     )
     layout.update(overrides)
@@ -106,141 +133,211 @@ def apply_light(fig: go.Figure, **overrides) -> go.Figure:
 
 
 # --------------------------------------------------------------------------- #
-# Global CSS — apply once per page via inject_global_css()
+# Global CSS — vayuai dark, Fraunces+Inter+JetBrains Mono
 # --------------------------------------------------------------------------- #
+_FONTS_LINK = (
+    "https://fonts.googleapis.com/css2?"
+    "family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&"
+    "family=Inter:wght@400;500;600;700&"
+    "family=JetBrains+Mono:wght@400;500;600&display=swap"
+)
+
 GLOBAL_CSS = f"""
+<link rel='preconnect' href='https://fonts.googleapis.com'>
+<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
+<link href='{_FONTS_LINK}' rel='stylesheet'>
 <style>
-  /* Layout */
+  /* --- Layout ---------------------------------------------------------- */
   .block-container {{
     padding-top: 1.0rem;
     padding-bottom: 2rem;
     max-width: 1500px;
   }}
-
-  /* Typography */
+  .stApp {{ background: {BG}; }}
   html, body, [class*="stApp"] {{
-    font-family: ui-sans-serif, -apple-system, system-ui, "Segoe UI",
-                 Roboto, sans-serif !important;
+    font-family: Inter, ui-sans-serif, -apple-system, system-ui, sans-serif !important;
     color: {TEXT};
     background-color: {BG};
   }}
+
+  /* --- Typography ------------------------------------------------------ */
   h1, h2, h3, h4, h5 {{
-    color: {TEXT};
-    letter-spacing: -0.01em;
+    color: {TEXT} !important;
+    font-family: Fraunces, ui-serif, Georgia, serif !important;
     font-weight: 600;
+    letter-spacing: -0.015em;
   }}
-  h1 {{ font-weight: 650; }}
+  h1 {{ font-weight: 700; letter-spacing: -0.022em; }}
+  h2, h3 {{ font-weight: 600; }}
   p, label, .stMarkdown {{ color: {TEXT}; }}
 
-  /* Sidebar */
+  /* Streamlit's <hr> divider */
+  hr {{
+    border: 0;
+    border-top: 1px solid {BORDER};
+    margin: 1.4rem 0;
+  }}
+
+  /* --- Sidebar --------------------------------------------------------- */
   [data-testid="stSidebar"] {{
     background-color: {BG_MUTED};
     border-right: 1px solid {BORDER};
   }}
   [data-testid="stSidebar"] .stMarkdown,
-  [data-testid="stSidebar"] label {{
+  [data-testid="stSidebar"] label,
+  [data-testid="stSidebar"] p,
+  [data-testid="stSidebar"] span {{
     color: {TEXT};
   }}
+  [data-testid="stSidebar"] h3,
+  [data-testid="stSidebar"] h4 {{
+    font-family: Inter, sans-serif !important;
+    font-size: 0.88rem !important;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: {TEXT_SUBTLE} !important;
+    font-weight: 600;
+  }}
 
-  /* Metric cards */
+  /* --- Metric cards ---------------------------------------------------- */
   [data-testid="stMetric"] {{
-    background: {BG};
+    background: {BG_MUTED};
     border: 1px solid {BORDER};
-    border-radius: 12px;
-    padding: 14px 16px;
+    border-radius: 14px;
+    padding: 16px 18px;
   }}
   [data-testid="stMetricLabel"] {{
-    color: {TEXT_MUTED} !important;
-    font-size: 0.78rem !important;
+    color: {TEXT_SUBTLE} !important;
+    font-size: 0.72rem !important;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.07em;
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    font-weight: 500;
   }}
   [data-testid="stMetricValue"] {{
     color: {TEXT} !important;
+    font-family: Fraunces, ui-serif, serif !important;
     font-weight: 600 !important;
+    font-size: 1.9rem !important;
+  }}
+  [data-testid="stMetricDelta"] {{
+    color: {TEXT_MUTED} !important;
   }}
 
-  /* Buttons — light, OpenAI-style. Streamlit wraps the label in <p>; we
-     force the <p> color explicitly so the global p{{color:...}} rule loses. */
+  /* --- Buttons --------------------------------------------------------- */
   .stButton > button {{
-    background: {BG};
+    background: {BG_MUTED};
     color: {TEXT};
     border: 1px solid {BORDER};
-    border-radius: 10px;
+    border-radius: 999px;
+    font-family: Inter, sans-serif;
     font-weight: 500;
-    padding: 6px 14px;
+    padding: 6px 16px;
     transition: all 0.15s ease;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
   }}
   .stButton > button:hover {{
-    background: {BG_MUTED};
-    border-color: {BORDER_STRONG};
+    background: {BG_SUBTLE};
+    border-color: {ACCENT}55;
+    color: {ACCENT_DEEP};
   }}
   .stButton > button p,
   .stButton > button div {{
-    color: {TEXT} !important;
+    color: inherit !important;
     font-weight: 500;
     margin: 0;
   }}
-  /* Optional "primary" button via st.button(..., type="primary") */
+  /* Primary button — gold pill */
   .stButton > button[kind="primary"] {{
-    background: {TEXT};
-    border-color: {TEXT};
+    background: {ACCENT};
+    border-color: {ACCENT};
+    color: #1a1612;
   }}
   .stButton > button[kind="primary"] p,
   .stButton > button[kind="primary"] div {{
-    color: #FFFFFF !important;
+    color: #1a1612 !important;
+    font-weight: 600;
   }}
   .stButton > button[kind="primary"]:hover {{
     background: {ACCENT_DEEP};
     border-color: {ACCENT_DEEP};
+    color: #1a1612;
   }}
 
-  /* Dataframes / tables */
+  /* --- Inputs ---------------------------------------------------------- */
+  .stSelectbox > div > div,
+  .stMultiSelect > div > div,
+  .stTextInput > div > div > input {{
+    background: {BG_MUTED} !important;
+    border: 1px solid {BORDER} !important;
+    color: {TEXT} !important;
+    border-radius: 10px !important;
+  }}
+  .stTextInput input,
+  .stSelectbox div,
+  .stMultiSelect span,
+  .stSlider {{
+    color: {TEXT} !important;
+  }}
+
+  /* --- Dataframes / tables -------------------------------------------- */
   div[data-testid="stDataFrame"] {{
     border: 1px solid {BORDER};
     border-radius: 10px;
-  }}
-
-  /* Expanders */
-  details {{
-    border: 1px solid {BORDER};
-    border-radius: 10px;
-    background: {BG};
-  }}
-
-  /* Tabs */
-  div[data-baseweb="tab-list"] {{
-    border-bottom: 1px solid {BORDER};
-  }}
-
-  /* Plotly chart container — no extra border */
-  .stPlotlyChart {{
-    background: {BG};
-    border-radius: 12px;
-  }}
-
-  /* Hide Streamlit chrome */
-  #MainMenu {{ visibility: hidden; }}
-  footer {{ visibility: hidden; }}
-  header {{ background: {BG} !important; }}
-
-  /* Custom card utility */
-  .pulse-card {{
-    background: {BG};
-    border: 1px solid {BORDER};
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 12px;
-  }}
-  .pulse-card-muted {{
     background: {BG_MUTED};
   }}
 
-  /* Pill / tag utility */
+  /* --- Expanders ------------------------------------------------------- */
+  details {{
+    border: 1px solid {BORDER};
+    border-radius: 10px;
+    background: {BG_MUTED};
+  }}
+  details > summary {{ color: {TEXT}; }}
+
+  /* --- Tabs ------------------------------------------------------------ */
+  div[data-baseweb="tab-list"] {{
+    border-bottom: 1px solid {BORDER};
+    gap: 4px;
+  }}
+  div[data-baseweb="tab"] {{
+    color: {TEXT_MUTED} !important;
+    font-family: Inter, sans-serif !important;
+  }}
+  div[data-baseweb="tab"][aria-selected="true"] {{
+    color: {ACCENT_DEEP} !important;
+  }}
+  div[data-baseweb="tab-highlight"] {{
+    background: {ACCENT} !important;
+  }}
+
+  /* --- Plotly chart container ----------------------------------------- */
+  .stPlotlyChart {{
+    background: transparent;
+    border-radius: 12px;
+  }}
+
+  /* --- Streamlit chrome ----------------------------------------------- */
+  #MainMenu {{ visibility: hidden; }}
+  footer    {{ visibility: hidden; }}
+  header    {{ background: {BG} !important; }}
+  [data-testid="stToolbar"] {{ background: {BG}; }}
+
+  /* --- Custom card utility -------------------------------------------- */
+  .pulse-card {{
+    background: {BG_MUTED};
+    border: 1px solid {BORDER};
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 12px;
+  }}
+  .pulse-card-muted {{
+    background: {BG_SUBTLE};
+  }}
+
+  /* --- Pill / tag utility --------------------------------------------- */
   .pulse-pill {{
     display: inline-block;
-    padding: 2px 10px;
+    padding: 3px 12px;
     border-radius: 999px;
     background: {BG_MUTED};
     color: {TEXT_MUTED};
@@ -248,16 +345,43 @@ GLOBAL_CSS = f"""
     font-weight: 500;
     border: 1px solid {BORDER};
     margin-right: 4px;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    letter-spacing: 0.02em;
   }}
   .pulse-pill-accent {{
-    background: {ACCENT}22;
+    background: {ACCENT}1F;
     color: {ACCENT_DEEP};
-    border-color: {ACCENT}55;
+    border-color: {ACCENT}66;
   }}
   .pulse-pill-critical {{
-    background: {CRITICAL}11;
+    background: {CRITICAL}1F;
     color: {CRITICAL};
-    border-color: {CRITICAL}44;
+    border-color: {CRITICAL}55;
+  }}
+
+  /* --- Code blocks ----------------------------------------------------- */
+  code, pre, [data-testid="stCodeBlock"] {{
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    background: {BG_MUTED} !important;
+    color: {TEXT} !important;
+    border-radius: 8px;
+    border: 1px solid {BORDER};
+  }}
+
+  /* --- Caption ---------------------------------------------------------*/
+  .stCaption, [data-testid="stCaptionContainer"] {{
+    color: {TEXT_MUTED} !important;
+  }}
+
+  /* --- Alerts (st.info / st.warning / st.error) ----------------------- */
+  div[data-baseweb="notification"] {{
+    background: {BG_MUTED} !important;
+    border: 1px solid {BORDER} !important;
+    border-radius: 12px !important;
+    color: {TEXT} !important;
+  }}
+  div[data-baseweb="notification"] * {{
+    color: {TEXT} !important;
   }}
 </style>
 """
@@ -269,15 +393,15 @@ def inject_global_css() -> None:
 
 
 # --------------------------------------------------------------------------- #
-# pydeck helpers
+# pydeck helpers — dark CARTO basemap
 # --------------------------------------------------------------------------- #
 def map_kwargs() -> dict:
-    """Shared pydeck Deck() kwargs that give a clean light basemap.
+    """Shared pydeck Deck() kwargs for a dark CARTO basemap.
 
-    Uses CARTO's free Positron tiles via pydeck's "carto" map_provider —
-    no Mapbox token required.
+    No Mapbox token required; pydeck's "carto" provider serves the
+    dark-matter tile set for free.
     """
     return {
         "map_provider": "carto",
-        "map_style": "light",
+        "map_style":    "dark",
     }

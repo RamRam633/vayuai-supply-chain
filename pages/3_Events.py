@@ -63,7 +63,7 @@ with c2:
     sc = df["source"].value_counts().reset_index()
     sc.columns = ["source", "count"]
     fig2 = px.bar(sc, x="source", y="count",
-                  color_discrete_sequence=["#0E0E0E"])
+                  color_discrete_sequence=["#d4af37"])
     apply_light(fig2, height=300, xaxis_tickangle=-25)
     st.plotly_chart(fig2, use_container_width=True)
 

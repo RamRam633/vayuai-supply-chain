@@ -151,7 +151,7 @@ oc = (
     .reset_index()
 )
 fig2 = px.bar(oc, x="origin_country", y="aircraft", color="aircraft",
-              color_continuous_scale=[[0, "#E5E7EB"], [1, "#0E7490"]])
+              color_continuous_scale=[[0, "#3a3530"], [1, "#7ecbe0"]])
 apply_light(fig2, height=320, margin=dict(l=10, r=10, t=10, b=100),
             xaxis_tickangle=-35, coloraxis_showscale=False)
 st.plotly_chart(fig2, use_container_width=True)

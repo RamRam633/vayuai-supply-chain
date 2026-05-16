@@ -1,0 +1,137 @@
+<!--
+  Vercel-deployable landing page that lives on your existing website
+  (e.g., pulse.yourdomain.com) and embeds the live Streamlit dashboard
+  hosted on Render. Update DASHBOARD_URL once your Render service is live.
+
+  Usage:
+    1. cd landing && vercel --prod
+    2. Point a subdomain (pulse.yourdomain.com) to the Vercel deploy.
+    3. Set DASHBOARD_URL below to your Render URL.
+-->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Global Supply Chain Pulse</title>
+<meta name="description" content="Live snapshot of global supply chain pressure: ports, freight, commodities, weather, geopolitics, macro." />
+<style>
+  :root {
+    --bg: #0e1117;
+    --bg-2: #1a1f2e;
+    --text: #e6e6e6;
+    --muted: #8aa0b8;
+    --accent: #00d4ff;
+    --warn: #ffa500;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  header {
+    padding: 24px 32px;
+    border-bottom: 1px solid #2a3142;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  header h1 { margin: 0; font-size: 1.25rem; letter-spacing: 0.02em; }
+  header .tag {
+    color: var(--accent);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .hero {
+    padding: 48px 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .hero h2 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    margin: 0 0 12px;
+  }
+  .hero p { color: var(--muted); max-width: 640px; line-height: 1.55; }
+  .cta {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 22px;
+    background: var(--accent);
+    color: #0b1018;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+  }
+  .cta.secondary {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    margin-left: 8px;
+  }
+  .frame-wrap {
+    padding: 0 16px 48px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  iframe {
+    width: 100%;
+    height: 90vh;
+    min-height: 720px;
+    border: 1px solid #2a3142;
+    border-radius: 8px;
+    background: var(--bg-2);
+  }
+  footer {
+    padding: 32px;
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-align: center;
+    border-top: 1px solid #2a3142;
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div>
+      <span class="tag">Global Supply Chain Pulse</span>
+      <h1>External Intelligence Dashboard</h1>
+    </div>
+    <a class="cta secondary" href="#dashboard">Skip to live view</a>
+  </header>
+
+  <section class="hero">
+    <h2>Where pressure is building in global supply chains, right now.</h2>
+    <p>
+      A live snapshot of geopolitical events, freight congestion, commodity
+      shocks, weather disruption and macro shifts &mdash; fused into regional
+      risk scores and an AI-generated executive summary. Built on public
+      data feeds (GDELT, USGS, NOAA, FRED, AISStream).
+    </p>
+    <a class="cta" href="#dashboard">View live dashboard</a>
+  </section>
+
+  <section class="frame-wrap" id="dashboard">
+    <!--
+      Replace the src below with your Render URL once the Streamlit app is live.
+      Example: https://supply-chain-pulse.onrender.com
+    -->
+    <iframe
+      src="https://YOUR-RENDER-URL.onrender.com"
+      title="Global Supply Chain Pulse dashboard"
+      loading="lazy"
+      sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+    ></iframe>
+  </section>
+
+  <footer>
+    Data: public APIs. Heuristic risk scoring &mdash; situational awareness only,
+    not operational or investment advice.
+  </footer>
+</body>
+</html>

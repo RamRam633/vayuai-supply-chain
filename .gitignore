@@ -1,0 +1,15 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+venv/
+.DS_Store
+.streamlit/secrets.toml
+.pytest_cache/
+pytest-cache-files-*/
+
+# Runtime data — generated locally and on the server; never commit
+data/*.sqlite
+data/*.parquet
+data/*.json
+data/*.marker

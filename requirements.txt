@@ -1,0 +1,32 @@
+# Global Supply Chain Pulse - Python dependencies
+# Pinned to versions known to play well together as of 2026-05.
+
+streamlit==1.36.0
+pandas==2.2.2
+numpy==1.26.4
+requests==2.32.3
+requests-cache==1.2.1
+python-dotenv==1.0.1
+
+# Map / geo
+pydeck==0.9.1
+folium==0.17.0
+streamlit-folium==0.22.0
+
+# Charts
+plotly==5.22.0
+altair==5.3.0
+
+# Data sources
+yfinance==0.2.40
+feedparser==6.0.11
+
+# Async + websockets (AISStream)
+websockets==12.0
+aiohttp==3.9.5
+
+# Optional: Claude exec summary
+anthropic==0.34.2
+
+# Dev / test
+pytest==8.2.2

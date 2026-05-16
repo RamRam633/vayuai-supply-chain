@@ -3,12 +3,15 @@ headless = true
 port = 8501
 enableXsrfProtection = true
 
+# Tell Streamlit to paint the vayuai dark theme from the very first frame.
+# Without this, every page switch flashes the default light theme before
+# our injected CSS overrides it.
 [theme]
-base = "light"
-primaryColor = "#10A37F"
-backgroundColor = "#FFFFFF"
-secondaryBackgroundColor = "#F7F7F8"
-textColor = "#0E0E0E"
+base = "dark"
+primaryColor = "#d4af37"
+backgroundColor = "#0b0a09"
+secondaryBackgroundColor = "#131110"
+textColor = "#f5f1e8"
 font = "sans serif"
 
 [browser]

@@ -20,7 +20,7 @@ from components import (
     render_filters_sidebar, apply_filters,
     inject_global_css, apply_light, map_kwargs,
     render_api_status, render_cold_start_banner_if_needed,
-    render_brand_topbar, render_brand_header, render_brand_footer, LOGO_PATH,
+    setup_brand, render_brand_topbar, render_brand_header, render_brand_footer, LOGO_PATH,
     ACCENT, TEXT_MUTED,
 )
 from pipelines import bootstrap
@@ -32,6 +32,7 @@ st.set_page_config(
     layout="wide",
 )
 inject_global_css()
+setup_brand()
 bootstrap.ensure_bootstrap()
 render_brand_topbar(section="Port Detail")
 render_brand_header()

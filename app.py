@@ -37,6 +37,7 @@ from components import (
     render_top_movers,
     render_api_status,
     render_cold_start_banner_if_needed,
+    setup_brand,
     render_brand_topbar,
     render_brand_header,
     render_brand_footer,
@@ -56,6 +57,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 inject_global_css()
+setup_brand()
 
 # Kick the cold-start bootstrap on the very first render of this process.
 # Idempotent - subsequent reruns are no-ops.

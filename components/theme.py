@@ -149,18 +149,23 @@ GLOBAL_CSS = f"""
 <style>
   @import url('{_FONTS_LINK}');
 
-  /* Layout. Extra top padding so Streamlit's hidden top toolbar can't
-     overlap the page heading. */
+  /* Layout. Hide Streamlit's top chrome (Deploy button, hamburger,
+     status indicator) entirely so the brand topbar can own the top of
+     the page. Without this the topbar gets clipped behind the chrome. */
+  header[data-testid="stHeader"],
+  div[data-testid="stToolbar"],
+  div[data-testid="stDecoration"],
+  div[data-testid="stStatusWidget"] {{
+    display: none !important;
+  }}
   .block-container {{
-    padding-top: 0.5rem;
+    padding-top: 1.5rem;
     padding-bottom: 2rem;
     max-width: 1500px;
   }}
-  /* Push the main content past Streamlit's chrome (the 'Manage app' and
-     hamburger live in a roughly 56px tall sticky header). */
   [data-testid="stMainBlockContainer"],
   section.main > div.block-container {{
-    padding-top: 0.5rem !important;
+    padding-top: 1.5rem !important;
   }}
   .stApp {{ background: {BG}; }}
   html, body, [class*="stApp"] {{

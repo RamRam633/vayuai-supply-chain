@@ -209,6 +209,18 @@ GLOBAL_CSS = f"""
   [data-testid="stSidebarNavViewButton"] {{
     display: none !important;
   }}
+
+  /* Streamlit auto-labels the entrypoint as "app" (from app.py). Relabel
+     just the first nav item to "VayuAI app" by hiding the inner text and
+     injecting our label via ::before. */
+  [data-testid="stSidebarNavItems"] > li:first-child a span {{
+    font-size: 0 !important;
+  }}
+  [data-testid="stSidebarNavItems"] > li:first-child a span::before {{
+    content: "VayuAI app";
+    font-size: 0.9rem;
+    color: inherit;
+  }}
   [data-testid="stSidebar"] .stMarkdown,
   [data-testid="stSidebar"] label,
   [data-testid="stSidebar"] p,

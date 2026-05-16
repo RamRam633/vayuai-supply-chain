@@ -197,6 +197,18 @@ GLOBAL_CSS = f"""
     background-color: {BG_MUTED};
     border-right: 1px solid {BORDER};
   }}
+
+  /* Never collapse the page nav. Hide Streamlit's auto 'View more' /
+     'View less' toggle so all pages are always visible. */
+  [data-testid="stSidebarNavItems"],
+  ul[data-testid="stSidebarNavItems"] {{
+    max-height: none !important;
+    overflow: visible !important;
+  }}
+  [data-testid="stSidebarNavSeparator"],
+  [data-testid="stSidebarNavViewButton"] {{
+    display: none !important;
+  }}
   [data-testid="stSidebar"] .stMarkdown,
   [data-testid="stSidebar"] label,
   [data-testid="stSidebar"] p,

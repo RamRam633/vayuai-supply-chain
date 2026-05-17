@@ -26,14 +26,12 @@ inject = ('<title>Global Supply Chain Pulse | VayuAI</title>' \
 '<meta name=\"description\" content=\"Real-time view of global trade. Fifteen public feeds across nine regions and eight strategic chokepoints, refreshed continuously.\"/>' \
 '<meta property=\"og:title\" content=\"Global Supply Chain Pulse | VayuAI\"/>' \
 '<meta property=\"og:description\" content=\"Real-time view of global trade. Fifteen public feeds across nine regions and eight strategic chokepoints, refreshed continuously.\"/>' \
-'<meta property=\"og:image\" content=\"https://vayuai.ai/brand/logo.png\"/>' \
 '<meta property=\"og:url\" content=\"https://supplychain.vayuai.ai\"/>' \
 '<meta property=\"og:type\" content=\"website\"/>' \
 '<meta property=\"og:site_name\" content=\"VayuAI\"/>' \
-'<meta name=\"twitter:card\" content=\"summary_large_image\"/>' \
+'<meta name=\"twitter:card\" content=\"summary\"/>' \
 '<meta name=\"twitter:title\" content=\"Global Supply Chain Pulse | VayuAI\"/>' \
-'<meta name=\"twitter:description\" content=\"Real-time view of global trade. Fifteen public feeds across nine regions and eight strategic chokepoints, refreshed continuously.\"/>' \
-'<meta name=\"twitter:image\" content=\"https://vayuai.ai/brand/logo.png\"/>'); \
+'<meta name=\"twitter:description\" content=\"Real-time view of global trade. Fifteen public feeds across nine regions and eight strategic chokepoints, refreshed continuously.\"/>'); \
 patched = html.replace('<title>Streamlit</title>', inject); \
 assert patched != html, 'Streamlit title pattern not found - check Streamlit version'; \
 idx.write_text(patched); \

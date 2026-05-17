@@ -15,6 +15,30 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Patch Streamlit's shell index.html so social-bot crawlers (LinkedIn,
+# Twitter, Slack, iMessage) see a real <title> and OG meta tags. By default
+# the shell title is hardcoded "Streamlit" and JS-set page titles don't
+# reach crawlers since they don't execute JS.
+RUN python -c "import streamlit, pathlib; \
+idx = pathlib.Path(streamlit.__file__).parent / 'static' / 'index.html'; \
+html = idx.read_text(); \
+inject = ('<title>Global Supply Chain Pulse | VayuAI</title>' \
+'<meta name=\"description\" content=\"Real-time view of global trade. Fifteen public feeds across nine regions and eight strategic chokepoints, refreshed continuously.\"/>' \
+'<meta property=\"og:title\" content=\"Global Supply Chain Pulse | VayuAI\"/>' \
+'<meta property=\"og:description\" content=\"Real-time view of global trade. Fifteen public feeds across nine regions and eight strategic chokepoints, refreshed continuously.\"/>' \
+'<meta property=\"og:image\" content=\"https://vayuai.ai/brand/logo.png\"/>' \
+'<meta property=\"og:url\" content=\"https://supplychain.vayuai.ai\"/>' \
+'<meta property=\"og:type\" content=\"website\"/>' \
+'<meta property=\"og:site_name\" content=\"VayuAI\"/>' \
+'<meta name=\"twitter:card\" content=\"summary_large_image\"/>' \
+'<meta name=\"twitter:title\" content=\"Global Supply Chain Pulse | VayuAI\"/>' \
+'<meta name=\"twitter:description\" content=\"Real-time view of global trade. Fifteen public feeds across nine regions and eight strategic chokepoints, refreshed continuously.\"/>' \
+'<meta name=\"twitter:image\" content=\"https://vayuai.ai/brand/logo.png\"/>'); \
+patched = html.replace('<title>Streamlit</title>', inject); \
+assert patched != html, 'Streamlit title pattern not found - check Streamlit version'; \
+idx.write_text(patched); \
+print(f'Patched OG meta into {idx}')"
+
 # App source.
 COPY . .
 

@@ -52,11 +52,12 @@ if df.empty:
     )
 else:
     st.markdown("### Commodity prices")
-    tab1, tab2, tab3, tab4 = st.tabs([
+    tab1, tab2, tab3, tab4, tab5 = st.tabs([
         "Rebased (90d)",
         "Per-commodity drill-down",
         "Returns heatmap",
         "All raw price grid",
+        "Performance leaderboard",
     ])
 
     # --- Rebased overlay --------------------------------------------------- #
@@ -221,12 +222,69 @@ else:
                     )
                     st.plotly_chart(fig_s, use_container_width=True)
 
+    # --- Performance leaderboard ------------------------------------------ #
+    with tab5:
+        perf_window = st.selectbox(
+            "Return window",
+            options=["7d", "30d", "90d", "180d", "365d"],
+            index=2, key="commo_perf_window",
+        )
+        perf_days = {"7d": 7, "30d": 30, "90d": 90, "180d": 180, "365d": 365}[perf_window]
+        if len(df) <= perf_days:
+            perf_days = len(df) - 1
+        perf_rows = []
+        for col in df.columns:
+            s = df[col].dropna()
+            if len(s) <= perf_days:
+                continue
+            ret_pct = (s.iloc[-1] / s.iloc[-perf_days - 1] - 1) * 100
+            perf_rows.append({
+                "commodity": col,
+                "category":  config.COMMODITY_CATEGORY.get(col, "Other"),
+                "return":    round(ret_pct, 2),
+                "last":      round(s.iloc[-1], 2),
+            })
+        if not perf_rows:
+            st.info(f"Not enough history to compute {perf_window} returns yet.")
+        else:
+            perf_df = pd.DataFrame(perf_rows).sort_values("return", ascending=True)
+            up = perf_df[perf_df["return"] > 0]
+            down = perf_df[perf_df["return"] < 0]
+            m1, m2, m3 = st.columns(3)
+            if not up.empty:
+                top = up.iloc[-1]
+                m1.metric(f"Top gainer ({perf_window})",
+                          top["commodity"], f"{top['return']:+.2f}%")
+            if not down.empty:
+                bot = down.iloc[0]
+                m2.metric(f"Top decliner ({perf_window})",
+                          bot["commodity"], f"{bot['return']:+.2f}%")
+            m3.metric("Series tracked", f"{len(perf_df)}")
+
+            fig_perf = px.bar(
+                perf_df, x="return", y="commodity", orientation="h",
+                color="return",
+                color_continuous_scale=[
+                    [0.0, "#e85a5a"], [0.5, "#3a3530"], [1.0, "#84a17d"],
+                ],
+                color_continuous_midpoint=0,
+                hover_data={"category": True, "last": ":.2f"},
+            )
+            apply_light(
+                fig_perf, height=max(360, 28 * len(perf_df)),
+                coloraxis_showscale=False,
+                margin=dict(l=10, r=10, t=10, b=10),
+                xaxis_title=f"{perf_window} return (%)",
+            )
+            st.plotly_chart(fig_perf, use_container_width=True)
+
     # Latest snapshot table
     rets_all = df.pct_change(fill_method=None)
     latest = rets_all.iloc[-1]
     vol    = rets_all.iloc[-21:-1].std()
     z      = (latest / vol).fillna(0.0)
     snap = pd.DataFrame({
+        "Category":    [config.COMMODITY_CATEGORY.get(c, "Other") for c in df.columns],
         "Last close":  df.iloc[-1],
         "1d return %": (latest * 100).round(2),
         "20d vol %":   (vol * 100).round(2),
@@ -239,6 +297,50 @@ else:
             "z-score": st.column_config.NumberColumn("z-score", format="%.2f"),
         },
     )
+
+    # --- Key spreads & ratios ---------------------------------------------- #
+    st.markdown("### Key spreads & ratios")
+    st.caption(
+        "Three diagnostic series that traders watch as proxies for global "
+        "demand, financial stress and inflation regime. Brent-WTI is the "
+        "geographic premium on seaborne crude; Gold/Silver climbs when "
+        "investors prefer the most-monetary metal; Copper/Gold (Dr. Copper) "
+        "rises when industrial demand outruns safe-haven demand."
+    )
+    sp_cols = st.columns(3)
+
+    def _line(series: pd.Series, title: str, latest_fmt: str = "{:.2f}",
+              tail: int = 180):
+        s = series.dropna().tail(tail)
+        if s.empty:
+            return None
+        fig = go.Figure(
+            go.Scatter(x=s.index, y=s.values, mode="lines",
+                       line=dict(color=ACCENT, width=1.6))
+        )
+        apply_light(
+            fig, height=200, margin=dict(l=10, r=10, t=36, b=10),
+            title=dict(text=f"{title} - latest {latest_fmt.format(s.iloc[-1])}",
+                       font=dict(size=12)),
+            showlegend=False,
+        )
+        return fig
+
+    if "Brent Crude" in df.columns and "Crude Oil (WTI)" in df.columns:
+        brent_wti = df["Brent Crude"] - df["Crude Oil (WTI)"]
+        fig_bw = _line(brent_wti, "Brent - WTI (USD/bbl)", "${:.2f}")
+        if fig_bw is not None:
+            sp_cols[0].plotly_chart(fig_bw, use_container_width=True)
+    if "Gold" in df.columns and "Silver" in df.columns:
+        gs = df["Gold"] / df["Silver"]
+        fig_gs = _line(gs, "Gold / Silver ratio", "{:.1f}")
+        if fig_gs is not None:
+            sp_cols[1].plotly_chart(fig_gs, use_container_width=True)
+    if "Copper" in df.columns and "Gold" in df.columns:
+        cg = df["Copper"] / df["Gold"]
+        fig_cg = _line(cg, "Copper / Gold ratio", "{:.3f}")
+        if fig_cg is not None:
+            sp_cols[2].plotly_chart(fig_cg, use_container_width=True)
 
 
 # --------------------------------------------------------------------------- #

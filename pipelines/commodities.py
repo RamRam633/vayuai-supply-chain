@@ -44,19 +44,32 @@ DEMO_MARKER = Path(config.DATA_DIR) / "commodities_demo.marker"
 # --------------------------------------------------------------------------- #
 # FRED series IDs per commodity display name.
 # Daily series: DCOILWTICO, DCOILBRENTEU, DHHNGSP, GOLDPMGBD228NLBM.
-# Monthly (IMF Primary Commodity Prices): PWHEAMTUSDM, PMAIZMTUSDM,
-# PSOYBUSDM, PCOPPUSDM, PSILVUSDM, PALUMUSDM.
+# Everything else is the IMF Primary Commodity Prices monthly bundle,
+# distributed via FRED with the P{ABBR}USDM naming convention.
 _FRED_IDS = {
+    # Energy (daily)
     "Crude Oil (WTI)": "DCOILWTICO",
     "Brent Crude":     "DCOILBRENTEU",
     "Natural Gas":     "DHHNGSP",
-    "Gold":            "GOLDPMGBD228NLBM",
+    # Precious metals
+    "Gold":            "GOLDPMGBD228NLBM",   # daily, London PM fix
+    "Silver":          "PSILVUSDM",          # monthly
+    # Industrial metals (monthly)
+    "Copper":          "PCOPPUSDM",
+    "Aluminum":        "PALUMUSDM",
+    "Nickel":          "PNICKUSDM",
+    "Zinc":            "PZINCUSDM",
+    "Iron Ore":        "PIORECRUSDM",
+    "Uranium":         "PURANUSDM",
+    # Grains (monthly)
     "Wheat":           "PWHEAMTUSDM",
     "Corn":            "PMAIZMTUSDM",
     "Soybeans":        "PSOYBUSDM",
-    "Copper":          "PCOPPUSDM",
-    "Silver":          "PSILVUSDM",
-    "Aluminum":        "PALUMUSDM",
+    # Soft agriculture (monthly)
+    "Coffee":          "PCOFFOTMUSDM",
+    "Sugar":           "PSUGAISAUSDM",
+    "Cocoa":           "PCOCOUSDM",
+    "Cotton":          "PCOTTINDUSDM",
 }
 
 # Datahub.io curated CSV mirrors - Date,Price columns. Used as a secondary
@@ -69,29 +82,48 @@ _DATAHUB_CSVS = {
 }
 
 # Approximate 2026 levels used as the anchor for synthetic fallback series.
+# Units match what FRED reports for each: USD/bbl for oil, USD/mmBtu for gas,
+# USD/troy oz for gold/silver, USD/metric ton for industrial metals,
+# USD/bushel for grains, USD/lb for cotton/sugar/coffee, USD/kg for cocoa.
 _SYNTH_ANCHORS = {
-    "Crude Oil (WTI)":  101.0,
-    "Brent Crude":      105.0,
-    "Natural Gas":        2.85,
-    "Wheat":              5.40,
-    "Corn":               4.25,
-    "Soybeans":          11.80,
-    "Copper":             6.10,
-    "Gold":            2850.0,
-    "Silver":            32.0,
-    "Aluminum":        2500.0,
+    "Crude Oil (WTI)":   101.0,
+    "Brent Crude":       105.0,
+    "Natural Gas":         2.85,
+    "Gold":             2850.0,
+    "Silver":             32.0,
+    "Copper":           9200.0,    # IMF reports in USD/ton
+    "Aluminum":         2500.0,
+    "Nickel":          18000.0,
+    "Zinc":             2800.0,
+    "Iron Ore":          110.0,
+    "Uranium":            80.0,
+    "Wheat":               5.40,
+    "Corn":                4.25,
+    "Soybeans":           11.80,
+    "Coffee":              2.00,
+    "Sugar":               0.21,
+    "Cocoa":               6.50,
+    "Cotton":              0.80,
 }
 _SYNTH_VOL = {
     "Crude Oil (WTI)":  0.014,
     "Brent Crude":      0.013,
     "Natural Gas":      0.030,
+    "Gold":             0.010,
+    "Silver":           0.020,
+    "Copper":           0.018,
+    "Aluminum":         0.015,
+    "Nickel":           0.025,
+    "Zinc":             0.020,
+    "Iron Ore":         0.025,
+    "Uranium":          0.020,
     "Wheat":            0.018,
     "Corn":             0.018,
     "Soybeans":         0.016,
-    "Copper":           0.018,
-    "Gold":             0.010,
-    "Silver":           0.020,
-    "Aluminum":         0.015,
+    "Coffee":           0.025,
+    "Sugar":            0.020,
+    "Cocoa":            0.025,
+    "Cotton":           0.015,
 }
 
 

@@ -156,19 +156,56 @@ CARGO_OPERATORS = {
 
 
 # --------------------------------------------------------------------------- #
-# Commodity universe.
+# Commodity universe. Values are legacy yfinance tickers kept for reference;
+# the live fetch in pipelines/commodities.py uses FRED IDs from its own map.
 # --------------------------------------------------------------------------- #
 COMMODITIES = {
+    # Energy
     "Crude Oil (WTI)":     "CL=F",
     "Brent Crude":         "BZ=F",
     "Natural Gas":         "NG=F",
+    # Precious metals
+    "Gold":                "GC=F",
+    "Silver":              "SI=F",
+    # Industrial metals
+    "Copper":              "HG=F",
+    "Aluminum":            "ALI=F",
+    "Nickel":              "FRED:PNICKUSDM",
+    "Zinc":                "FRED:PZINCUSDM",
+    "Iron Ore":            "FRED:PIORECRUSDM",
+    "Uranium":             "FRED:PURANUSDM",
+    # Grains
     "Wheat":               "ZW=F",
     "Corn":                "ZC=F",
     "Soybeans":            "ZS=F",
-    "Copper":              "HG=F",
-    "Gold":                "GC=F",
-    "Silver":              "SI=F",
-    "Aluminum":            "ALI=F",
+    # Soft agriculture
+    "Coffee":              "FRED:PCOFFOTMUSDM",
+    "Sugar":               "FRED:PSUGAISAUSDM",
+    "Cocoa":               "FRED:PCOCOUSDM",
+    "Cotton":              "FRED:PCOTTINDUSDM",
+}
+
+# Per-commodity category, used to colour-group the rebased chart and
+# performance leaderboard.
+COMMODITY_CATEGORY = {
+    "Crude Oil (WTI)":  "Energy",
+    "Brent Crude":      "Energy",
+    "Natural Gas":      "Energy",
+    "Gold":             "Precious metals",
+    "Silver":           "Precious metals",
+    "Copper":           "Industrial metals",
+    "Aluminum":         "Industrial metals",
+    "Nickel":           "Industrial metals",
+    "Zinc":             "Industrial metals",
+    "Iron Ore":         "Industrial metals",
+    "Uranium":          "Industrial metals",
+    "Wheat":            "Grains",
+    "Corn":             "Grains",
+    "Soybeans":         "Grains",
+    "Coffee":           "Softs",
+    "Sugar":            "Softs",
+    "Cocoa":            "Softs",
+    "Cotton":           "Softs",
 }
 
 # FRED series IDs we'll pull for the macro/freight panel.
